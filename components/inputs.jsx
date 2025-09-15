@@ -27,7 +27,7 @@ export const InputField = ({
         id={name}
         placeholder={placeholder}
         className={cn(
-          "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+          "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-200",
           "border-gray-300",
           error && "border-red-500 bg-red-50",
           inputStyles

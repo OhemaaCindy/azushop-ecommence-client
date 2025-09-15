@@ -14,8 +14,12 @@ import { assets } from "@/assets/assets";
 import LoginForm from "./loginForm";
 import Link from "next/link";
 import { ShoppingCart, X } from "lucide-react";
+import { useState } from "react";
+import RegisterForm from "./registerForm";
 
 const Modal = () => {
+  const [mode, setMode] = useState("login");
+
   return (
     <AlertDialog>
       <AlertDialogTrigger className="flex gap-2">
@@ -36,11 +40,21 @@ const Modal = () => {
               Azu Shop
             </div>
 
-            <p>LogIn To Continue Shopping</p>
+            {/* <p>LogIn To Continue Shopping</p> */}
+            <p>
+              {mode === "login"
+                ? "Log in to continue shopping"
+                : "Create an account to start shopping"}
+            </p>
           </div>
         </AlertDialogHeader>
         <AlertDialogDescription>
-          <LoginForm />
+          {mode === "login" ? (
+            <LoginForm setMode={setMode} />
+          ) : (
+            <RegisterForm setMode={setMode} />
+          )}
+          {/* <LoginForm /> */}
         </AlertDialogDescription>
         <AlertDialogFooter></AlertDialogFooter>
       </AlertDialogContent>

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 // import { Button } from "./button";
 import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { loginSchema, type LoginFormData } from "../schemas/auth-schema";
+// import { loginSchema, type RegisterFormData } from "../schemas/auth-schema";
 import toast from "react-hot-toast";
 
 import Cookies from "js-cookie";
@@ -13,7 +13,7 @@ import { AlertDialogCancel } from "./ui/alert-dialog";
 import { ArrowUpRight } from "lucide-react";
 // import { useLoginAdmin } from "../hooks/register-admin.hook";
 
-const LoginForm = ({ setMode }) => {
+const RegisterForm = ({ setMode }) => {
   const {
     register,
     handleSubmit,
@@ -63,16 +63,40 @@ const LoginForm = ({ setMode }) => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
-          label="Email"
+          label="First Name"
           name="email"
           type="email"
           register={register}
           error={errors.email?.message}
           required
         />
+        <InputField
+          label="Last Name"
+          name="email"
+          type="email"
+          register={register}
+          error={errors.email?.message}
+          required
+        />
+        <InputField
+          label="Email"
+          name="password"
+          type="password"
+          register={register}
+          error={errors.password?.message}
+          required
+        />
 
         <InputField
           label="Password"
+          name="password"
+          type="password"
+          register={register}
+          error={errors.password?.message}
+          required
+        />
+        <InputField
+          label="Confirm Password"
           name="password"
           type="password"
           register={register}
@@ -86,18 +110,18 @@ const LoginForm = ({ setMode }) => {
             disabled={isSubmitting}
             className="mb-4 cursor-pointer w-full bg-pink-600 hover:bg-pink-300"
           >
-            {isSubmitting ? "Logging in..." : "Log in"}
+            {isSubmitting ? "Signing up..." : "Sign Up"}
           </Button>
+          {/* <AlertDialogCancel>Cancel</AlertDialogCancel> */}
         </div>
-
         <p className="flex items-center gap-2 text-sm">
-          New customer?{" "}
+          Already have an account?{" "}
           <button
             type="button"
-            onClick={() => setMode("signup")}
+            onClick={() => setMode("login")}
             className="text-pink-500 underline"
           >
-            Create your account
+            Login here
           </button>
         </p>
       </form>
@@ -105,4 +129,4 @@ const LoginForm = ({ setMode }) => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
