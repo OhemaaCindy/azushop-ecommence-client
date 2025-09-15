@@ -1,13 +1,10 @@
 import React from "react";
-import { assets } from "@/assets/assets";
-import Image from "next/image";
 
 const Footer = () => {
   return (
     <footer>
       <div className="flex flex-col md:flex-row items-start justify-center px-6 md:px-16 lg:px-32 gap-10 py-14 border-b border-gray-500/30 text-gray-500">
         <div className="w-4/5">
-          {/* <Image className="w-28 md:w-32" src={assets.logo} alt="logo" /> */}
           <p className="font-medium text-gray-900 mb-5">Azushop</p>
           <p className="mt-6 text-sm">
             Shop the best deals on fashion, beauty, and lifestyle products. Fast
