@@ -11,6 +11,7 @@ import Link from "next/link";
 import { loginSchema } from "@/schemas/auth.schema";
 import { AlertDialogCancel } from "./ui/alert-dialog";
 import { ArrowUpRight } from "lucide-react";
+import { useLogin } from "@/hooks/auth.hook";
 // import { useLoginAdmin } from "../hooks/register-admin.hook";
 
 const LoginForm = ({ setMode }) => {
@@ -23,28 +24,26 @@ const LoginForm = ({ setMode }) => {
     resolver: zodResolver(loginSchema),
   });
 
-  //   const {
-  //     mutate: loginUser,
-  //     isPending,
-  //     error,
-  //     isError,
-  //     data,
-  //   } = useLoginAdmin();
+  const { mutate: login, isPending, error, isError, data } = useLogin();
 
   const onSubmit = async (data) => {
     console.log("🚀 ~ onSubmit ~ data:", data);
-    // loginUser(data, {
-    //   onSuccess(res) {
-    //     Cookies.set("token", res.token);
-    //     reset();
-    //     toast.success("Login successful");
+    login(data, {
+      onSuccess(res) {
+        console.log("🚀 ~ onSuccess ~ res:", res);
+        Cookies.set("token", res.token);
+        reset();
+        toast.success("Login successful");
 
-    //     navigate("/overview");
-    //   },
-    //   onError() {
-    //     toast.error("Failed to login.Please try again later");
-    //   },
-    // });
+        // navigate("/overview");
+      },
+      onError(error) {
+        console.log("🚀 ~ onError ~ error:", error);
+        // const errorMessage = toast.error(
+        //   "Failed to login.Please try again later"
+        // );
+      },
+    });
   };
 
   return (
@@ -83,23 +82,24 @@ const LoginForm = ({ setMode }) => {
         <div className="pt-4  ">
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isPending}
             className="mb-4 cursor-pointer w-full bg-pink-600 hover:bg-pink-300"
           >
-            {isSubmitting ? "Logging in..." : "Log in"}
+            {isSubmitting || isPending ? "Logging in..." : "Log in"}
           </Button>
         </div>
-
-        <p className="flex items-center gap-2 text-sm">
-          New customer?{" "}
-          <button
-            type="button"
-            onClick={() => setMode("signup")}
-            className="text-pink-500 underline"
-          >
-            Create your account
-          </button>
-        </p>
+        <div>
+          <p className="flex items-center gap-2 text-sm">
+            New customer?{" "}
+            <button
+              type="button"
+              onClick={() => setMode("signup")}
+              className="text-pink-500 underline"
+            >
+              Create your account
+            </button>
+          </p>
+        </div>
       </form>
     </div>
   );
