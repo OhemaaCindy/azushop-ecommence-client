@@ -3,9 +3,10 @@
  export const apiEndpoints = {
   baseURL: BASEURL,
   AUTH: {
-    register: "/user/register",
-    login: "/user/login",
-    logout: "/user/logout",
+    register: "/users/register",
+    login: "/users/login",
+    checkAuth: "/users/check-auth",
+   logout: "/users/logout",
    },
 
    CATEGORY: {

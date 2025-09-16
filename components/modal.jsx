@@ -16,18 +16,31 @@ import Link from "next/link";
 import { ShoppingCart, X } from "lucide-react";
 import { useState } from "react";
 import RegisterForm from "./registerForm";
+import { useAppContext } from "@/context/AppContext";
 
 const Modal = () => {
   const [mode, setMode] = useState("login");
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { isSeller, router, userData, isLoadingUser } = useAppContext();
+
+  console.log("🚀 ~ Navbar ~ userData:", userData);
+
+  if (isLoadingUser) return <p>Loading user...</p>;
 
   return (
     <AlertDialog open={isOpenModal} onOpenChange={setIsOpenModal}>
       <AlertDialogTrigger asChild className="flex gap-2">
-        <button onClick={() => setIsOpenModal(true)}>
-          <Image src={assets.user_icon} alt="user icon" />
-          Account
-        </button>
+        {userData ? (
+          <>
+            <Image src={assets.user_icon} alt="user icon" />
+            <p>{userData.username}</p>
+          </>
+        ) : (
+          <button onClick={() => setIsOpenModal(true)}>
+            <Image src={assets.user_icon} alt="user icon" />
+            Account
+          </button>
+        )}
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

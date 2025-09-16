@@ -25,7 +25,7 @@ const LoginForm = ({ setMode, setIsModal }) => {
   const onSubmit = async (data) => {
     login(data, {
       onSuccess(res) {
-        Cookies.set("token", res.token);
+        localStorage.setItem("token", res.token);
         reset();
         toast.success("Login successful");
         setIsModal(false);

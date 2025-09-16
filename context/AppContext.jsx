@@ -1,99 +1,236 @@
-'use client'
-import { productsDummyData, userDummyData } from "@/assets/assets";
+"use client";
+
+import { productsDummyData } from "@/assets/assets";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
+import { checkAuthUser } from "./../services/auth.services";
 
 export const AppContext = createContext();
 
 export const useAppContext = () => {
-    return useContext(AppContext)
-}
+  const context = useContext(AppContext);
+  if (!context) throw new Error("useAppContext must be used within a provider");
+  return context;
+};
 
-export const AppContextProvider = (props) => {
+export const AppContextProvider = ({ children }) => {
+  const currency = process.env.NEXT_PUBLIC_CURRENCY;
+  const router = useRouter();
 
-    const currency = process.env.NEXT_PUBLIC_CURRENCY
-    const router = useRouter()
+  const [products, setProducts] = useState([]);
+  const [userData, setUserData] = useState(null);
+  const [isSeller, setIsSeller] = useState(true);
+  const [cartItems, setCartItems] = useState({});
 
-    const [products, setProducts] = useState([])
-    const [userData, setUserData] = useState(false)
-    const [isSeller, setIsSeller] = useState(true)
-    const [cartItems, setCartItems] = useState({})
+  const { data, isLoading: isLoadingUser } = useQuery({
+    queryKey: ["get-user"],
+    queryFn: checkAuthUser,
+  });
 
-    const fetchProductData = async () => {
-        setProducts(productsDummyData)
+  useEffect(() => {
+    setProducts(productsDummyData);
+  }, []);
+
+  useEffect(() => {
+    if (data) setUserData(data);
+  }, [data]);
+
+  const addToCart = (itemId) => {
+    let cartData = structuredClone(cartItems);
+    cartData[itemId] = (cartData[itemId] || 0) + 1;
+    setCartItems(cartData);
+  };
+
+  const updateCartQuantity = (itemId, quantity) => {
+    let cartData = structuredClone(cartItems);
+    if (quantity === 0) {
+      delete cartData[itemId];
+    } else {
+      cartData[itemId] = quantity;
     }
+    setCartItems(cartData);
+  };
 
-    const fetchUserData = async () => {
-        setUserData(userDummyData)
+  const getCartCount = () =>
+    Object.values(cartItems).reduce((sum, qty) => sum + qty, 0);
+
+  const getCartAmount = () => {
+    let totalAmount = 0;
+    for (const itemId in cartItems) {
+      const itemInfo = products.find((product) => product._id === itemId);
+      if (itemInfo && cartItems[itemId] > 0) {
+        totalAmount += itemInfo.offerPrice * cartItems[itemId];
+      }
     }
+    return Math.floor(totalAmount * 100) / 100;
+  };
 
-    const addToCart = async (itemId) => {
+  const value = {
+    currency,
+    router,
+    isSeller,
+    setIsSeller,
+    userData,
+    isLoadingUser,
+    products,
+    cartItems,
+    setCartItems,
+    addToCart,
+    updateCartQuantity,
+    getCartCount,
+    getCartAmount,
+  };
 
-        let cartData = structuredClone(cartItems);
-        if (cartData[itemId]) {
-            cartData[itemId] += 1;
-        }
-        else {
-            cartData[itemId] = 1;
-        }
-        setCartItems(cartData);
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+};
 
-    }
+// "use client";
+// import { productsDummyData, userDummyData } from "@/assets/assets";
+// import { useQuery } from "@tanstack/react-query";
+// import { useRouter } from "next/navigation";
+// import { createContext, useContext, useEffect, useState } from "react";
+// import { checkAuthUser } from "./../services/auth.services";
 
-    const updateCartQuantity = async (itemId, quantity) => {
+// export const AppContext = createContext();
 
-        let cartData = structuredClone(cartItems);
-        if (quantity === 0) {
-            delete cartData[itemId];
-        } else {
-            cartData[itemId] = quantity;
-        }
-        setCartItems(cartData)
+// export const useAppContext = () => {
+//   return useContext(AppContext);
+// };
 
-    }
+// export const AppContextProvider = (props) => {
+//   const currency = process.env.NEXT_PUBLIC_CURRENCY;
+//   const router = useRouter();
 
-    const getCartCount = () => {
-        let totalCount = 0;
-        for (const items in cartItems) {
-            if (cartItems[items] > 0) {
-                totalCount += cartItems[items];
-            }
-        }
-        return totalCount;
-    }
+//   const [products, setProducts] = useState([]);
+//   const [userData, setUserData] = useState(false);
+//   const [isSeller, setIsSeller] = useState(true);
+//   const [cartItems, setCartItems] = useState({});
 
-    const getCartAmount = () => {
-        let totalAmount = 0;
-        for (const items in cartItems) {
-            let itemInfo = products.find((product) => product._id === items);
-            if (cartItems[items] > 0) {
-                totalAmount += itemInfo.offerPrice * cartItems[items];
-            }
-        }
-        return Math.floor(totalAmount * 100) / 100;
-    }
+//   const { data, isLoading: isloadingUser } = useQuery({
+//     queryKey: ["get-user"],
+//     queryFn: checkAuthUser,
+//   });
+//   console.log("🚀 ~ AppContextProvider ~ data:", data);
 
-    useEffect(() => {
-        fetchProductData()
-    }, [])
+//   const fetchProductData = async () => {
+//     setProducts(productsDummyData);
+//   };
 
-    useEffect(() => {
-        fetchUserData()
-    }, [])
+//   const fetchUserData = async () => {
+//     // get auth user
+//     setUserData(data);
+//     // no user open auth modal
+//   };
 
-    const value = {
-        currency, router,
-        isSeller, setIsSeller,
-        userData, fetchUserData,
-        products, fetchProductData,
-        cartItems, setCartItems,
-        addToCart, updateCartQuantity,
-        getCartCount, getCartAmount
-    }
+//   const addToCart = async (itemId) => {
+//     let cartData = structuredClone(cartItems);
+//     if (cartData[itemId]) {
+//       cartData[itemId] += 1;
+//     } else {
+//       cartData[itemId] = 1;
+//     }
+//     setCartItems(cartData);
+//   };
 
-    return (
-        <AppContext.Provider value={value}>
-            {props.children}
-        </AppContext.Provider>
-    )
-}
+//   const updateCartQuantity = async (itemId, quantity) => {
+//     let cartData = structuredClone(cartItems);
+//     if (quantity === 0) {
+//       delete cartData[itemId];
+//     } else {
+//       cartData[itemId] = quantity;
+//     }
+//     setCartItems(cartData);
+//   };
+
+//   const getCartCount = () => {
+//     let totalCount = 0;
+//     for (const items in cartItems) {
+//       if (cartItems[items] > 0) {
+//         totalCount += cartItems[items];
+//       }
+//     }
+//     return totalCount;
+//   };
+
+//   const getCartAmount = () => {
+//     let totalAmount = 0;
+//     for (const items in cartItems) {
+//       let itemInfo = products.find((product) => product._id === items);
+//       if (cartItems[items] > 0) {
+//         totalAmount += itemInfo.offerPrice * cartItems[items];
+//       }
+//     }
+//     return Math.floor(totalAmount * 100) / 100;
+//   };
+
+//   useEffect(() => {
+//     fetchProductData();
+//   }, []);
+
+//   useEffect(() => {
+//     fetchUserData();
+//   }, []);
+
+//   const value = {
+//     currency,
+//     router,
+//     isSeller,
+
+//     setIsSeller,
+//     userData,
+//     fetchUserData,
+//     products,
+//     fetchProductData,
+//     cartItems,
+//     setCartItems,
+//     addToCart,
+//     updateCartQuantity,
+//     getCartCount,
+//     getCartAmount,
+//   };
+
+//   return (
+//     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
+//   );
+// };
+
+// export const useAppContext = createContext();
+
+// export const UserProvider = ({ children }) => {
+//   const [user, setUser] = useState(null);
+//   const [loading, setIsLoading] = useState(false);
+
+//   useEffect(() => {
+//     if (user) return;
+//     const accessToken = localStorage.getItem("token");
+
+//     if (!accessToken) {
+//       setIsLoading(false);
+//       return;
+//     }
+
+//     const fetchUser = async () => {
+//       try {
+//         setIsLoading(true);
+//         const authUser = await loginUser();
+//         setUser(authUser);
+//       } catch (error) {
+//         console.log("🚀 ~ fetchUser ~ error:", error);
+//       }
+//     };
+//     fetchUser();
+//   }, [user]);
+
+//   return (
+//     <UserContext.Provider value={{ user, loading }}>
+//       {children}
+//     </UserContext.Provider>
+//   );
+// };
+
+// export const useUser = () => {
+//   const context = useContext(useAppContext);
+//   if (!context) throw new Error("useUser must be used within a provider");
+//   return context;
+// };
