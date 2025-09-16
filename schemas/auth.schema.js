@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const registerSchema = z.object({
-  
+  username:z.string().min(3,"Enter  Username"),
   email: z.email("Invalid email address").min(1, "Email is required"),
   password: z
     .string()

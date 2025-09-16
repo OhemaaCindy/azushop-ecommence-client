@@ -1,10 +1,7 @@
 import { useForm } from "react-hook-form";
-// import { Button } from "./button";
 import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { loginSchema, type LoginFormData } from "../schemas/auth-schema";
 import toast from "react-hot-toast";
-
 import Cookies from "js-cookie";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -12,7 +9,6 @@ import { loginSchema } from "@/schemas/auth.schema";
 import { AlertDialogCancel } from "./ui/alert-dialog";
 import { ArrowUpRight } from "lucide-react";
 import { useLogin } from "@/hooks/auth.hook";
-// import { useLoginAdmin } from "../hooks/register-admin.hook";
 
 const LoginForm = ({ setMode, setIsModal }) => {
   const {
@@ -49,10 +45,6 @@ const LoginForm = ({ setMode, setIsModal }) => {
           {error.message}
         </span>
       )}
-
-      {/* {data && data.success && (
-        <p className="text-green-600 mt-2">{data.message}</p>
-      )} */}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField

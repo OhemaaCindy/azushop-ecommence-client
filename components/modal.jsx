@@ -25,7 +25,6 @@ const Modal = () => {
     <AlertDialog open={isOpenModal} onOpenChange={setIsOpenModal}>
       <AlertDialogTrigger asChild className="flex gap-2">
         <button onClick={() => setIsOpenModal(true)}>
-          {" "}
           <Image src={assets.user_icon} alt="user icon" />
           Account
         </button>
@@ -44,7 +43,6 @@ const Modal = () => {
               Azu Shop
             </div>
 
-            {/* <p>LogIn To Continue Shopping</p> */}
             <p>
               {mode === "login"
                 ? "Log in to continue shopping"
@@ -58,9 +56,8 @@ const Modal = () => {
           ) : (
             <RegisterForm setMode={setMode} />
           )}
-          {/* <LoginForm /> */}
         </AlertDialogDescription>
-        <AlertDialogFooter></AlertDialogFooter>
+        {/* <AlertDialogFooter></AlertDialogFooter> */}
       </AlertDialogContent>
     </AlertDialog>
   );
