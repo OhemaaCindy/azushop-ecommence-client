@@ -14,7 +14,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useLogin } from "@/hooks/auth.hook";
 // import { useLoginAdmin } from "../hooks/register-admin.hook";
 
-const LoginForm = ({ setMode }) => {
+const LoginForm = ({ setMode, setIsModal }) => {
   const {
     register,
     handleSubmit,
@@ -27,34 +27,28 @@ const LoginForm = ({ setMode }) => {
   const { mutate: login, isPending, error, isError, data } = useLogin();
 
   const onSubmit = async (data) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
     login(data, {
       onSuccess(res) {
-        console.log("🚀 ~ onSuccess ~ res:", res);
         Cookies.set("token", res.token);
         reset();
         toast.success("Login successful");
-
+        setIsModal(false);
         // navigate("/overview");
       },
       onError(error) {
-        console.log("🚀 ~ onError ~ error:", error);
-        // const errorMessage = toast.error(
-        //   "Failed to login.Please try again later"
-        // );
+        const errorMessage = error.message;
+        toast.error(errorMessage);
       },
     });
   };
 
   return (
     <div className="space-y-4 p-10 ">
-      {/* {isError && error && (
-        <ul className="text-rose-500 mt-2 bg-rose-100 border border-rose-500 rounded-lg px-8 py-2 list-disc">
-          {error.errors.map((err, index) => (
-            <li key={index}>{err.message}</li>
-          ))}
-        </ul>
-      )} */}
+      {isError && error && (
+        <span className="text-rose-500 mt-2 bg-rose-100 border border-rose-500 rounded-lg px-8 py-2 list-disc">
+          {error.message}
+        </span>
+      )}
 
       {/* {data && data.success && (
         <p className="text-green-600 mt-2">{data.message}</p>

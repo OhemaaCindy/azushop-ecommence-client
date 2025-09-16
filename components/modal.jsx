@@ -19,12 +19,16 @@ import RegisterForm from "./registerForm";
 
 const Modal = () => {
   const [mode, setMode] = useState("login");
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger className="flex gap-2">
-        <Image src={assets.user_icon} alt="user icon" />
-        Account
+    <AlertDialog open={isOpenModal} onOpenChange={setIsOpenModal}>
+      <AlertDialogTrigger asChild className="flex gap-2">
+        <button onClick={() => setIsOpenModal(true)}>
+          {" "}
+          <Image src={assets.user_icon} alt="user icon" />
+          Account
+        </button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -50,7 +54,7 @@ const Modal = () => {
         </AlertDialogHeader>
         <AlertDialogDescription>
           {mode === "login" ? (
-            <LoginForm setMode={setMode} />
+            <LoginForm setMode={setMode} setIsModal={setIsOpenModal} />
           ) : (
             <RegisterForm setMode={setMode} />
           )}
