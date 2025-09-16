@@ -40,7 +40,7 @@ export const checkAuthUser = async () => {
 };
 export const logout = async (payload) => {
   try {
-    const response = await axiosClient.post(apiEndpoints.AUTH.logout, payload);
+    const response = await axiosClient.get(apiEndpoints.AUTH.logout);
     return response.data;
   } catch (error) {
     console.log("🚀 ~ logout ~ error:", error)

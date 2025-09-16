@@ -17,62 +17,109 @@ import { ShoppingCart, X } from "lucide-react";
 import { useState } from "react";
 import RegisterForm from "./registerForm";
 import { useAppContext } from "@/context/AppContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { useLogout } from "@/hooks/auth.hook";
+import { logout } from "@/services/auth.services";
+import { useMutation } from "@tanstack/react-query";
 
 const Modal = () => {
   const [mode, setMode] = useState("login");
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { isSeller, router, userData, isLoadingUser } = useAppContext();
 
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
+
   console.log("🚀 ~ Navbar ~ userData:", userData);
 
   if (isLoadingUser) return <p>Loading user...</p>;
 
+  const handleLogout = () => {
+    logout();
+    localStorage.removeItem("token");
+  };
+
   return (
-    <AlertDialog open={isOpenModal} onOpenChange={setIsOpenModal}>
-      <AlertDialogTrigger asChild className="flex gap-2">
-        {userData ? (
-          <>
-            <Image src={assets.user_icon} alt="user icon" />
-            <p>{userData.username}</p>
-          </>
-        ) : (
-          <button onClick={() => setIsOpenModal(true)}>
+    <>
+      {userData ? (
+        <div>
+          <DropdownMenu open={isOpenDropdown} onOpenChange={setIsOpenDropdown}>
+            <DropdownMenuTrigger className="flex items-center gap-2 cursor-pointer border-none outline-none">
+              <Image src={assets.user_icon} alt="user icon" />
+              <p>{userData.username}</p>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel className="flex items-center justify-between font-medium">
+                <Image src={assets.user_icon} alt="user icon" />
+                <p>{userData.username}</p>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+
+              <Link href="/cart">
+                <DropdownMenuItem>Cart</DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem>My Orders</DropdownMenuItem>
+
+              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      ) : (
+        <>
+          <button
+            onClick={() => setIsOpenModal(true)}
+            className="flex items-center gap-2 cursor-pointer"
+          >
             <Image src={assets.user_icon} alt="user icon" />
             Account
           </button>
-        )}
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogCancel className=" self-end border-none">
-            <div className="">
-              <X className="w-10" />
-            </div>
-          </AlertDialogCancel>
 
-          <div className="flex flex-col justify-center items-center">
-            <div className="text-2xl tracking-wide mb-3 flex gap-2 items-center">
-              <ShoppingCart className="text-pink-500" />
-              Azu Shop
-            </div>
+          <AlertDialog open={isOpenModal} onOpenChange={setIsOpenModal}>
+            <AlertDialogTrigger
+              asChild
+              className="flex gap-2"
+            ></AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogCancel className=" self-end border-none">
+                  <div className="">
+                    <X className="w-10" />
+                  </div>
+                </AlertDialogCancel>
 
-            <p>
-              {mode === "login"
-                ? "Log in to continue shopping"
-                : "Create an account to start shopping"}
-            </p>
-          </div>
-        </AlertDialogHeader>
-        <AlertDialogDescription>
-          {mode === "login" ? (
-            <LoginForm setMode={setMode} setIsModal={setIsOpenModal} />
-          ) : (
-            <RegisterForm setMode={setMode} />
-          )}
-        </AlertDialogDescription>
-        {/* <AlertDialogFooter></AlertDialogFooter> */}
-      </AlertDialogContent>
-    </AlertDialog>
+                <div className="flex flex-col justify-center items-center">
+                  <div className="text-2xl tracking-wide mb-3 flex gap-2 items-center">
+                    <ShoppingCart className="text-pink-500" />
+                    Azu Shop
+                  </div>
+
+                  <p>
+                    {mode === "login"
+                      ? "Log in to continue shopping"
+                      : "Create an account to start shopping"}
+                  </p>
+                </div>
+              </AlertDialogHeader>
+              <AlertDialogDescription>
+                {mode === "login" ? (
+                  <LoginForm setMode={setMode} setIsModal={setIsOpenModal} />
+                ) : (
+                  <RegisterForm setMode={setMode} />
+                )}
+              </AlertDialogDescription>
+              {/* <AlertDialogFooter></AlertDialogFooter> */}
+            </AlertDialogContent>
+          </AlertDialog>
+        </>
+      )}
+    </>
   );
 };
 
