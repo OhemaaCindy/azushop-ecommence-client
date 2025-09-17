@@ -1,4 +1,5 @@
 import { apiEndpoints } from "@/constants/api-endpoints";
+import { axiosClient } from "@/lib/axios";
 import axios from "axios";
 
 export const addCategory = async (payload) => {
@@ -6,7 +7,8 @@ export const addCategory = async (payload) => {
     const response = await axiosClient.post(apiEndpoints.CATEGORY.createCategory, payload);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
+   console.log("🚀 ~ addCategory ~ error:", error)
+   
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }

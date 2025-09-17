@@ -3,6 +3,7 @@ import "./globals.css";
 import { AppContextProvider } from "@/context/AppContext";
 import { Toaster } from "react-hot-toast";
 import Providers from "@/components/providers";
+import Footer from "@/components/Footer";
 
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 

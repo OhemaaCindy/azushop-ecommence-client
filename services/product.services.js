@@ -39,12 +39,13 @@ export const getAllProducts = async () => {
   }
 };
 
-export const getSingleProduct = async ({id}) => {
+export const getSingleProduct = async (id) => {
+  console.log("🚀 ~ getSingleProduct ~ id:", id)
   try {
     const response = await axiosClient.get(apiEndpoints.PRODUCTS.getSingleProduct(id));
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
+    console.log("🚀 ~ getSingleProduct ~ error:", error)
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
