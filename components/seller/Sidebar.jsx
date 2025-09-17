@@ -7,13 +7,12 @@ import { usePathname } from "next/navigation";
 const SideBar = () => {
   const pathname = usePathname();
   const menuItems = [
+    { name: "Add Product", path: "/seller", icon: assets.add_icon },
     {
       name: "Add Category",
       path: "/seller/category",
       icon: assets.add_icon,
     },
-    { name: "Add Product", path: "/seller", icon: assets.add_icon },
-
     {
       name: "Product List",
       path: "/seller/product-list",

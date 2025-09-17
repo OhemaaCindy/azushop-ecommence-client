@@ -32,7 +32,7 @@ export const getAllCategories = async () => {
     const response = await axiosClient.get(apiEndpoints.CATEGORY.getAllCategories );
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
+    console.log("🚀 ~ getAllCategories ~ error:", error)
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }

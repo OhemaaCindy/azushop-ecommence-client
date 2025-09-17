@@ -7,7 +7,7 @@ export const addProduct = async (payload) => {
     const response = await axiosClient.post(apiEndpoints.PRODUCTS.createProduct, payload);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
+    console.log("🚀 ~ addProduct ~ error:", error)
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }

@@ -2,6 +2,15 @@
 import React, { useState } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
+import { InputField } from "@/components/inputs";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "@/lib/utils";
+import { productSchema } from "@/schemas/product.schema";
+import { useQuery } from "@tanstack/react-query";
+import { getAllCategories } from "@/services/category.services";
+import { useAddProduct } from "@/hooks/product.hook";
+import toast from "react-hot-toast";
 
 const AddProduct = () => {
   const [files, setFiles] = useState([]);
@@ -11,132 +20,136 @@ const AddProduct = () => {
   const [price, setPrice] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm({
+    resolver: zodResolver(productSchema),
+  });
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["all-categories"],
+    queryFn: getAllCategories,
+  });
+
+  const categoryList = data || [];
+
+  const { mutate: addProduct, isPending, error, isError } = useAddProduct();
+
+  const onSubmit = (data) => {
+    addProduct(data, {
+      onSuccess: () => {
+        toast.success("Product created successfully");
+        reset();
+      },
+      onError: (error) => {
+        const errorMessage = error.message;
+        toast.error(errorMessage);
+      },
+    });
   };
 
   return (
     <div className="flex-1 min-h-screen flex flex-col justify-between">
-      <form onSubmit={handleSubmit} className="md:p-10 p-4 space-y-5 max-w-lg">
-        <div>
-          <p className="text-base font-medium">Product Image</p>
-          <div className="flex flex-wrap items-center gap-3 mt-2">
-            {[...Array(4)].map((_, index) => (
-              <label key={index} htmlFor={`image${index}`}>
-                <input
-                  onChange={(e) => {
-                    const updatedFiles = [...files];
-                    updatedFiles[index] = e.target.files[0];
-                    setFiles(updatedFiles);
-                  }}
-                  type="file"
-                  id={`image${index}`}
-                  hidden
-                />
-                <Image
-                  key={index}
-                  className="max-w-24 cursor-pointer"
-                  src={
-                    files[index]
-                      ? URL.createObjectURL(files[index])
-                      : assets.upload_area
-                  }
-                  alt=""
-                  width={100}
-                  height={100}
-                />
-              </label>
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col gap-1 max-w-md">
-          <label className="text-base font-medium" htmlFor="product-name">
-            Product Name
-          </label>
-          <input
-            id="product-name"
-            type="text"
-            placeholder="Type here"
-            className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-1 max-w-md">
-          <label
-            className="text-base font-medium"
-            htmlFor="product-description"
-          >
-            Product Description
+      {isError && error && (
+        <span className="text-rose-500 mt-2 bg-rose-100 border border-rose-500 rounded-lg px-8 py-2 list-disc">
+          {error.message}
+        </span>
+      )}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="md:p-10 p-4 space-y-5 max-w-lg"
+      >
+        <InputField
+          label="Product Name"
+          name="name"
+          type="text"
+          register={register}
+          error={errors.name?.message}
+        />
+
+        <div className="mb-4 w-full">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Description
           </label>
           <textarea
-            id="product-description"
+            {...register("description")}
+            name="description"
             rows={4}
-            className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40 resize-none"
-            placeholder="Type here"
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
-            required
-          ></textarea>
+            className={cn(
+              "w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-200 focus:border-transparent outline-none resize-none bg-gray-50",
+              errors.category && "border-red-500 bg-red-50"
+            )}
+            placeholder="Type here..."
+          />
+          {errors.description && (
+            <p className="mt-1 text-sm text-red-600">
+              {errors.description.message}
+            </p>
+          )}
         </div>
+
+        <select
+          {...register("category")}
+          className={cn(
+            "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "border-gray-300",
+            errors.category && "border-red-500 bg-red-50"
+          )}
+        >
+          <option value="">Select category</option>
+          {isLoading ? (
+            <div>Loading categories....</div>
+          ) : (
+            categoryList?.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category?.name}
+              </option>
+            ))
+          )}
+        </select>
+        {errors.category && (
+          <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>
+        )}
         <div className="flex items-center gap-5 flex-wrap">
           <div className="flex flex-col gap-1 w-32">
-            <label className="text-base font-medium" htmlFor="category">
-              Category
-            </label>
-            <select
-              id="category"
-              className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
-              onChange={(e) => setCategory(e.target.value)}
-              defaultValue={category}
-            >
-              <option value="Earphone">Earphone</option>
-              <option value="Headphone">Headphone</option>
-              <option value="Watch">Watch</option>
-              <option value="Smartphone">Smartphone</option>
-              <option value="Laptop">Laptop</option>
-              <option value="Camera">Camera</option>
-              <option value="Accessories">Accessories</option>
-            </select>
-          </div>
-          <div className="flex flex-col gap-1 w-32">
-            <label className="text-base font-medium" htmlFor="product-price">
-              Product Price
-            </label>
-            <input
-              id="product-price"
+            <InputField
+              label="Product Price"
+              name="price"
               type="number"
-              placeholder="0"
-              className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
-              onChange={(e) => setPrice(e.target.value)}
-              value={price}
-              required
+              register={register}
+              error={errors.price?.message}
             />
           </div>
           <div className="flex flex-col gap-1 w-32">
-            <label className="text-base font-medium" htmlFor="offer-price">
-              Offer Price
-            </label>
-            <input
-              id="offer-price"
+            <InputField
+              label="Quantity"
+              name="quantity"
               type="number"
-              placeholder="0"
-              className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
-              onChange={(e) => setOfferPrice(e.target.value)}
-              value={offerPrice}
-              required
+              register={register}
+              error={errors.quantity?.message}
+            />
+          </div>
+          <div className="flex flex-col gap-1 w-32">
+            <InputField
+              label="Brand"
+              name="brand"
+              type="text"
+              register={register}
+              error={errors.brand?.message}
             />
           </div>
         </div>
         <button
           type="submit"
           className="px-8 py-2.5 bg-pink-600 text-white font-medium rounded"
+          disabled={isSubmitting || isPending}
         >
-          ADD
+          {isSubmitting || isPending ? "Adding..." : "Add"}
         </button>
       </form>
-      {/* <Footer /> */}
     </div>
   );
 };
