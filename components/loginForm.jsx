@@ -9,8 +9,10 @@ import { loginSchema } from "@/schemas/auth.schema";
 import { AlertDialogCancel } from "./ui/alert-dialog";
 import { ArrowUpRight } from "lucide-react";
 import { useLogin } from "@/hooks/auth.hook";
+import { useQueryClient } from "@tanstack/react-query";
 
 const LoginForm = ({ setMode, setIsModal }) => {
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -26,6 +28,7 @@ const LoginForm = ({ setMode, setIsModal }) => {
     login(data, {
       onSuccess(res) {
         localStorage.setItem("token", res.token);
+        queryClient.invalidateQueries({ queryKey: ["user-info"] });
         reset();
         toast.success("Login successful");
         setIsModal(false);

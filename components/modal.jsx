@@ -13,7 +13,14 @@ import {
 import { assets } from "@/assets/assets";
 import LoginForm from "./loginForm";
 import Link from "next/link";
-import { ShoppingCart, X } from "lucide-react";
+import {
+  Boxes,
+  House,
+  ShoppingBasket,
+  ShoppingCart,
+  X,
+  LogOut,
+} from "lucide-react";
 import { useState } from "react";
 import RegisterForm from "./registerForm";
 import { useAppContext } from "@/context/AppContext";
@@ -54,20 +61,45 @@ const Modal = () => {
               <Image src={assets.user_icon} alt="user icon" />
               <p>{userData.username}</p>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel className="flex items-center justify-between font-medium">
+            <DropdownMenuContent className="w-60">
+              <DropdownMenuLabel className="flex items-center gap-10 font-medium">
                 <Image src={assets.user_icon} alt="user icon" />
                 <p>{userData.username}</p>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
 
-              <Link href="/cart">
-                <DropdownMenuItem>Cart</DropdownMenuItem>
+              <Link href="/">
+                <DropdownMenuItem className="flex items-center gap-10 cursor-pointer hover:bg-[#F9C5D5]">
+                  <House />
+                  <p className="font-normal">Home</p>
+                </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem>My Orders</DropdownMenuItem>
+              <Link href="/all-products">
+                <DropdownMenuItem className="flex items-center gap-10 cursor-pointer hover:bg-[#F9C5D5]">
+                  <ShoppingBasket />
+                  <p className="font-normal">Products</p>
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/cart">
+                <DropdownMenuItem className="flex items-center gap-10 cursor-pointer hover:bg-[#F9C5D5]">
+                  <ShoppingCart />
+                  <p className="font-normal">Cart</p>
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/my-orders">
+                <DropdownMenuItem className="flex items-center gap-10 cursor-pointer hover:bg-[#F9C5D5]">
+                  <Boxes />
+                  <p className="font-normal">My Orders</p>
+                </DropdownMenuItem>
+              </Link>
 
-              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="flex items-center gap-10 cursor-pointer"
+              >
+                <LogOut className="text-red-400" />
+                <p className="text-red-400">Logout</p>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -95,25 +127,25 @@ const Modal = () => {
                 </AlertDialogCancel>
 
                 <div className="flex flex-col justify-center items-center">
-                  <div className="text-2xl tracking-wide mb-3 flex gap-2 items-center">
+                  <AlertDialogTitle className="text-2xl tracking-wide mb-3 flex gap-2 items-center">
                     <ShoppingCart className="text-pink-500" />
                     Azu Shop
-                  </div>
+                  </AlertDialogTitle>
 
-                  <p>
+                  <AlertDialogDescription className="text-xl">
                     {mode === "login"
                       ? "Log in to continue shopping"
                       : "Create an account to start shopping"}
-                  </p>
+                  </AlertDialogDescription>
                 </div>
               </AlertDialogHeader>
-              <AlertDialogDescription>
+              <div>
                 {mode === "login" ? (
                   <LoginForm setMode={setMode} setIsModal={setIsOpenModal} />
                 ) : (
                   <RegisterForm setMode={setMode} />
                 )}
-              </AlertDialogDescription>
+              </div>
               {/* <AlertDialogFooter></AlertDialogFooter> */}
             </AlertDialogContent>
           </AlertDialog>

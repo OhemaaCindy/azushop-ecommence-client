@@ -1,4 +1,5 @@
 import { apiEndpoints } from "@/constants/api-endpoints";
+import { axiosClient } from "@/lib/axios";
 import axios from "axios";
 
 export const addProduct = async (payload) => {
@@ -30,7 +31,8 @@ export const getAllProducts = async () => {
     const response = await axiosClient.get(apiEndpoints.PRODUCTS.getAllProduct );
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
+   console.log("🚀 ~ getAllProducts ~ error:", error)
+   
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
