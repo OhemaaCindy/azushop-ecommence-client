@@ -7,10 +7,24 @@ import { useAppContext } from "@/context/AppContext";
 import Image from "next/image";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import Modal from "./modal";
+import { useQuery } from "@tanstack/react-query";
+import { checkAuthUser } from "@/services/auth.services";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const { isSeller, router } = useAppContext();
+  // const { isSeller, router } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["user-info"],
+    queryFn: checkAuthUser,
+  });
+  const userData = !isLoading && data ? data : null;
+  const isAdmin = userData ? userData.role === "ADMIN" : false;
+  const disable = isLoading || !data;
+  console.log("🔥🔥 ~ Navbar ~ userData:", userData);
+  console.log("🔥🔥 ~ Navbar ~ isAdmin:", isAdmin);
 
   return (
     <nav className="border-b border-gray-300 text-gray-700">
@@ -35,10 +49,10 @@ const Navbar = () => {
           <Link href="/" className="hover:text-gray-900 transition">
             Contact
           </Link>
-
-          {isSeller && (
+          {isAdmin && (
             <button
               onClick={() => router.push("/seller")}
+              disabled={disable}
               className="text-xs border px-4 py-1.5 rounded-full"
             >
               Seller Dashboard
@@ -95,13 +109,15 @@ const Navbar = () => {
           >
             Contact
           </Link>
+          {/* {isLoadingUser && <span>loading user...</span>} */}
 
-          {isSeller && (
+          {isAdmin && (
             <button
               onClick={() => {
                 router.push("/seller");
                 setIsOpen(false);
               }}
+              disabled={disable}
               className="text-xs border px-4 py-1.5 rounded-full"
             >
               Seller Dashboard

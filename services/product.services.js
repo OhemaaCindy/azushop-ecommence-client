@@ -52,14 +52,14 @@ export const getSingleProduct = async (id) => {
   }
 };
 
-// export const deleteProduct = async ({id}) => {
-//   try {
-//     const response = await axiosClient.get(apiEndpoints.PRODUCTS.deleteCategory(id));
-//     return response.data;
-//   } catch (error) {
-//     console.log("🚀 ~ registerUser ~ error:", error);
-//     if (axios.isAxiosError(error) && error.response) {
-//       throw error.response.data;
-//     }
-//   }
-// };
+export const deleteProduct = async ({id}) => {
+  try {
+    const response = await axiosClient.get(apiEndpoints.PRODUCTS.deleteCategory(id));
+    return response.data;
+  } catch (error) {
+    console.log("🚀 ~ registerUser ~ error:", error);
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    }
+  }
+};

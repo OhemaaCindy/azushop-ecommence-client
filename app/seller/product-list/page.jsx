@@ -1,29 +1,31 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { assets, productsDummyData } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import Footer from "@/components/seller/Footer";
 import Loading from "@/components/Loading";
+import { getAllProducts } from "@/services/product.services";
+import { useQuery } from "@tanstack/react-query";
+import { ExternalLink, Trash2 } from "lucide-react";
 
 const ProductList = () => {
   const { router } = useAppContext();
 
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useQuery({
+    queryKey: ["allProducts"],
+    queryFn: getAllProducts,
+  });
 
-  const fetchSellerProduct = async () => {
-    setProducts(productsDummyData);
-    setLoading(false);
-  };
+  const productList = data || [];
+  console.log("🚀 ~ ProductList ~ productList:", productList);
 
-  useEffect(() => {
-    fetchSellerProduct();
-  }, []);
+  const handleDelete = () => {};
 
   return (
     <div className="flex-1 min-h-screen flex flex-col justify-between">
-      {loading ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <div className="w-full md:p-10 p-4">
@@ -45,35 +47,57 @@ const ProductList = () => {
                 </tr>
               </thead>
               <tbody className="text-sm text-gray-500">
-                {products.map((product, index) => (
+                {productList?.map((product, index) => (
                   <tr key={index} className="border-t border-gray-500/20">
                     <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
                       <div className="bg-gray-500/10 rounded p-2">
-                        <Image
-                          src={product.image[0]}
+                        {/* <Image
+                          src={
+                            product?.image[0] ||
+                            "https://images.pexels.com/photos/6732076/pexels-photo-6732076.jpeg"
+                          }
                           alt="product Image"
                           className="w-16"
                           width={1280}
                           height={720}
+                        /> */}
+                        <Image
+                          src={
+                            Array.isArray(product?.image) &&
+                            product.image.length > 0
+                              ? product.image[0]
+                              : "https://images.pexels.com/photos/6732076/pexels-photo-6732076.jpeg"
+                          }
+                          alt="product Image"
+                          className="w-16 h-10"
+                          width={1280}
+                          height={720}
                         />
                       </div>
-                      <span className="truncate w-full">{product.name}</span>
+                      <span className="truncate w-full">{product?.name}</span>
                     </td>
                     <td className="px-4 py-3 max-sm:hidden">
-                      {product.category}
+                      {product?.category?.name}
                     </td>
-                    <td className="px-4 py-3">${product.offerPrice}</td>
+                    <td className="px-4 py-3">${product?.price}</td>
                     <td className="px-4 py-3 max-sm:hidden">
                       <button
-                        onClick={() => router.push(`/product/${product._id}`)}
+                        onClick={handleDelete}
+                        className="flex items-center gap-1 px-1.5 md:px-3.5 py-2 bg-red-600 text-white rounded-md"
+                      >
+                        <span className="hidden md:block">Delete</span>
+
+                        <Trash2 size={16} />
+                      </button>
+                    </td>
+                    <td className="px-4 py-3 max-sm:hidden">
+                      <button
+                        onClick={() => router.push(`/product/${product?.id}`)}
                         className="flex items-center gap-1 px-1.5 md:px-3.5 py-2 bg-pink-600 text-white rounded-md"
                       >
                         <span className="hidden md:block">Visit</span>
-                        <Image
-                          className="h-3.5"
-                          src={assets.redirect_icon}
-                          alt="redirect_icon"
-                        />
+
+                        <ExternalLink size={16} />
                       </button>
                     </td>
                   </tr>

@@ -31,7 +31,7 @@ const FeaturedProduct = () => {
         <div className="w-28 h-0.5 bg-pink-500 mt-2"></div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-14 mt-12 md:px-14 px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-14 mt-12 ">
         {products.map(({ id, image, title, description }) => (
           <div key={id} className="relative group">
             <Image
@@ -45,7 +45,7 @@ const FeaturedProduct = () => {
                 {description}
               </p>
               <button className="flex items-center gap-1.5 bg-pink-600 px-4 py-2 rounded">
-                Buy now{" "}
+                Buy now
                 <Image
                   className="h-3 w-3"
                   src={assets.redirect_icon}

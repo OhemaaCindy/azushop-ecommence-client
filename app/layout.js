@@ -4,6 +4,7 @@ import { AppContextProvider } from "@/context/AppContext";
 import { Toaster } from "react-hot-toast";
 import Providers from "@/components/providers";
 import Footer from "@/components/Footer";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
 
           <AppContextProvider>
             {children}
+             <ReactQueryDevtools initialIsOpen={false} />
           </AppContextProvider>
           </Providers>
         </body>

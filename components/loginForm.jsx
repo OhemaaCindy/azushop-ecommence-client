@@ -22,24 +22,45 @@ const LoginForm = ({ setMode, setIsModal }) => {
     resolver: zodResolver(loginSchema),
   });
 
-  const { mutate: login, isPending, error, isError, data } = useLogin();
+  // const { mutate: login, isPending, error, isError, data } = useLogin();
+  const {
+    mutate: login,
+    isPending,
+    error,
+    isError,
+  } = useLogin({
+    onSuccess: (res) => {
+      reset();
+      toast.success("Login successful");
+      setIsModal(false);
+      // router.push("/overview"); // optional redirect
+    },
+    onError: (error) => {
+      const errorMessage = error.message || "Login failed. Try again.";
+      toast.error(errorMessage);
+    },
+  });
 
-  const onSubmit = async (data) => {
-    login(data, {
-      onSuccess(res) {
-        localStorage.setItem("token", res.token);
-        queryClient.invalidateQueries({ queryKey: ["user-info"] });
-        reset();
-        toast.success("Login successful");
-        setIsModal(false);
-        // navigate("/overview");
-      },
-      onError(error) {
-        const errorMessage = error.message;
-        toast.error(errorMessage);
-      },
-    });
+  const onSubmit = (data) => {
+    login(data);
   };
+
+  // const onSubmit = async (data) => {
+  //   login(data, {
+  //     onSuccess(res) {
+  //       localStorage.setItem("token", res.token);
+  //       queryClient.invalidateQueries({ queryKey: ["user-info"] });
+  //       reset();
+  //       toast.success("Login successful");
+  //       setIsModal(false);
+  //       // navigate("/overview")
+  //     },
+  //     onError(error) {
+  //       const errorMessage = error.message;
+  //       toast.error(errorMessage);
+  //     },
+  //   });
+  // };
 
   return (
     <div className="space-y-4 p-10 ">

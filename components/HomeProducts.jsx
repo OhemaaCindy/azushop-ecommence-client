@@ -1,34 +1,24 @@
-import React from "react";
-import ProductCard from "./ProductCard";
-import { useAppContext } from "@/context/AppContext";
-import { useQuery } from "@tanstack/react-query";
-import { getAllProducts } from "@/services/product.services";
+import ShopByCategories from "./categoySection";
+import TrendingProducts from "./trendingProducts";
 
 const HomeProducts = () => {
-  const { products, router } = useAppContext();
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["allProducts"],
-    queryFn: getAllProducts,
-  });
-  const popularProducts = data?.slice(0, 10);
-
   return (
-    <div className="flex flex-col items-center pt-14">
-      <p className="text-2xl font-medium text-left w-full">Popular products</p>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-6 pb-14 w-full">
-        {popularProducts?.map((product, index) => (
-          <ProductCard key={index} product={product} />
-        ))}
-      </div>
-      <button
-        onClick={() => {
-          router.push("/all-products");
-        }}
-        className="px-12 py-2.5 border rounded text-gray-500/70 hover:bg-slate-50/90 transition"
-      >
-        See more
-      </button>
+    <div>
+      <ShopByCategories />
+      <section className="px-6 md:px-12 lg:px-20 py-10 text-center">
+        {/* Heading */}
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-4 [font-family:var(--font-playfair)]">
+          Top Trending Products
+        </h1>
+
+        {/* Subtitle */}
+        <p className="max-w-3xl mx-auto text-gray-600 text-sm md:text-base lg:text-lg leading-relaxed">
+          Discover the latest must-have items that are taking the market by
+          storm. Stay ahead with our curated collection of trending products
+          designed to elevate your lifestyle.
+        </p>
+      </section>
+      <TrendingProducts />
     </div>
   );
 };

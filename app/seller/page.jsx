@@ -116,7 +116,7 @@ const AddProduct = () => {
         <div className="flex items-center gap-5 flex-wrap">
           <div className="flex flex-col gap-1 w-32">
             <InputField
-              label="Product Price"
+              label="Product Price: $USD"
               name="price"
               type="number"
               register={register}
