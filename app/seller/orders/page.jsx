@@ -7,9 +7,9 @@ import Footer from "@/components/seller/Footer";
 import Loading from "@/components/Loading";
 import { useQuery } from "@tanstack/react-query";
 import { getAllOrders } from "@/services/order.services";
+import { format } from "date-fns";
 
 const Orders = () => {
-  
   const { data, isLoading } = useQuery({
     queryKey: ["getAllOrders"],
     queryFn: getAllOrders,
@@ -87,7 +87,9 @@ const Orders = () => {
                 <div>
                   <p className="flex flex-col">
                     <span>Method :{order?.paymentMethod}</span>
-                    <span>Date : {order?.createdAt}</span>
+                    <span>
+                      Date : {format(new Date(order?.createdAt), "MMM do yyyy")}
+                    </span>
                     <span>Payment : {order?.status || "N/A"}</span>
                   </p>
                 </div>

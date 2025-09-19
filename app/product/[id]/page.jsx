@@ -45,8 +45,10 @@ const ProductDetailsPage = () => {
 
           {/* Price */}
           <div className="flex items-center gap-4">
-            <span className="text-lg text-gray-400 line-through">$50</span>
-            <span className="text-2xl font-bold text-gray-900">$49</span>
+            <span className="text-lg text-gray-400 line-through">
+              ${productData?.price}
+            </span>
+            <span className="text-2xl font-bold text-gray-900">${productData?.price}</span>
             <span className="text-sm px-2 py-1 bg-red-100 text-red-600 rounded-full">
               10% OFF
             </span>
@@ -56,7 +58,7 @@ const ProductDetailsPage = () => {
 
           <CustomizedProducts />
 
-          <Add />
+          <Add productData={productData} />
 
           <hr className="border-gray-200" />
 

@@ -5,9 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 const TrendingProducts = () => {
-  // const [products, setProducts] = useState([]);
-  // const [loading, setLoading] = useState(true);
-
   const { data, isLoading } = useQuery({
     queryKey: ["allProducts"],
     queryFn: getAllProducts,

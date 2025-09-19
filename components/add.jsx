@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 
-const Add = () => {
+const Add = ({ productData }) => {
+  console.log("🚀 ~ Add ~ productData:", productData);
   const [quantity, setQuantity] = useState(1);
 
   const stock = 4;
@@ -38,8 +39,11 @@ const Add = () => {
           </div>
 
           <div className="">
-            Only <span className="text-orange-500 text-xs">4 items </span>left!{" "}
-            <br />
+            Only{" "}
+            <span className="text-orange-500 text-xs">
+              {productData?.quantity}items{" "}
+            </span>
+            left! <br />
             {"Don't"} miss it
           </div>
         </div>
