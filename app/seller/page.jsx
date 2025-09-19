@@ -91,7 +91,7 @@ const AddProduct = () => {
           )}
         </div>
 
-        <select
+        {/* <select
           {...register("category")}
           className={cn(
             "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
@@ -109,7 +109,31 @@ const AddProduct = () => {
               </option>
             ))
           )}
-        </select>
+
+        </select> */}
+        <div className="relative">
+          {isLoading && (
+            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white/80 rounded-md">
+              <span className="text-sm text-gray-500">Loading...</span>
+            </div>
+          )}
+          <select
+            {...register("category")}
+            disabled={isLoading}
+            className={cn(
+              "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+              "border-gray-300",
+              errors.category && "border-red-500 bg-red-50"
+            )}
+          >
+            <option value="">Select category</option>
+            {categoryList?.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category?.name}
+              </option>
+            ))}
+          </select>
+        </div>
         {errors.category && (
           <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>
         )}

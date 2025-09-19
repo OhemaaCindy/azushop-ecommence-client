@@ -3,15 +3,18 @@ import { Heart, Star } from "lucide-react";
 import { getAllProducts } from "@/services/product.services";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const TrendingProducts = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["allProducts"],
     queryFn: getAllProducts,
   });
+
   const popularProducts = data?.slice(0, 10) || [];
   console.log("🚀 ~ TrendingProducts ~ popularProducts:", popularProducts);
 
+  const router = useRouter();
   const productImages = [
     {
       id: 1,
@@ -70,6 +73,9 @@ const TrendingProducts = () => {
       </div>
     );
   }
+  const handleNavigation = () => {
+    router.push("/all-products");
+  };
 
   return (
     <>
@@ -132,7 +138,10 @@ const TrendingProducts = () => {
         {/* <button className=" border-2 p-3 rounded-2xl ring-1 ring-[#a30b29] text-[#F35C7A] py-2 px-4 hover:bg-[#F35C7A] hover:text-white">
           SEE MORE
         </button> */}
-        <button className="font-bold border-5 p-3 rounded-2xl ring-1 ring-[#0E7490] text-[#0E7490] py-2 px-4 hover:bg-[#0E7490] hover:text-white transition">
+        <button
+          className="font-bold border-5 p-3 rounded-2xl ring-1 ring-[#0E7490] text-[#0E7490] py-2 px-4 hover:bg-[#0E7490] hover:text-white transition"
+          onClick={handleNavigation}
+        >
           SEE MORE
         </button>
       </div>
