@@ -7,7 +7,7 @@ export const useAddProduct = () => {
   return useMutation({
     mutationFn: addProduct,
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["get-all-tracks"] });
+      queryClient.invalidateQueries({ queryKey: ["allProducts"] });
     },
   });
 };
