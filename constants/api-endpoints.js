@@ -31,4 +31,10 @@
     getAllOrders: "/orders",
 
   },
+  
+    ADDRESS: {
+    createAddress: "/address",
+    
+
+  },
 }

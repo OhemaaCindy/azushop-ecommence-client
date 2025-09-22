@@ -59,7 +59,7 @@ const Orders = () => {
                               key={item.id}
                               className="flex items-center justify-center"
                             >
-                              {item?.qty}
+                              {item?.qty || "N/A"}
                             </div>
                           );
                         })}
@@ -69,24 +69,34 @@ const Orders = () => {
                 </div>
                 <div>
                   <p>
-                    <span className="font-medium">
-                      {order?.fullName || "N/A"}
-                    </span>
-                    <br />
+                    {/* <span className="font-medium">
+                      {order?.totalPrice || "N/A"}
+                    </span> */}
+                    {/* <br /> */}
                     <span>{order?.shippingAddress?.address}</span>
                     <br />
-                    <span>{`${order?.shippingAddress?.city}, ${order?.shippingAddress?.postalCode}`}</span>
+                    <span>{`${order?.shippingAddress?.city || "N/A"}, ${
+                      order?.shippingAddress?.postalCode || "N/A"
+                    }`}</span>
                     <br />
                     <span>{order?.shippingAddress?.country}</span>
                   </p>
                 </div>
                 <p className="font-medium my-auto">
-                  {/* {currency} */}
-                  {order?.amount || "N/A"}
+                  {order?.orderItems?.map((item) => {
+                    return (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-center"
+                      >
+                        {item?.price || "N/A"}
+                      </div>
+                    );
+                  })}
                 </p>
                 <div>
                   <p className="flex flex-col">
-                    <span>Method :{order?.paymentMethod}</span>
+                    <span>Method :{order?.paymentMethod || "N/A"}</span>
                     <span>
                       Date : {format(new Date(order?.createdAt), "MMM do yyyy")}
                     </span>

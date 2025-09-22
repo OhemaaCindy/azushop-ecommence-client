@@ -23,8 +23,8 @@ const Navbar = () => {
   const userData = !isLoading && data ? data : null;
   const isAdmin = userData ? userData.role === "ADMIN" : false;
   const disable = isLoading || !data;
-  console.log("🔥🔥 ~ Navbar ~ userData:", userData);
-  console.log("🔥🔥 ~ Navbar ~ isAdmin:", isAdmin);
+  // console.log("🔥🔥 ~ Navbar ~ userData:", userData);
+  // console.log("🔥🔥 ~ Navbar ~ isAdmin:", isAdmin);
 
   return (
     <nav className="border-b border-gray-300 text-gray-700">

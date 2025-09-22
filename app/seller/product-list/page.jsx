@@ -19,7 +19,7 @@ const ProductList = () => {
   });
 
   const productList = data || [];
-  console.log("🚀 ~ ProductList ~ productList:", productList);
+  // console.log("🚀 ~ ProductList ~ productList:", productList);
 
   const handleDelete = () => {};
 
