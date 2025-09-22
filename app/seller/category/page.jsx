@@ -6,18 +6,23 @@ import { useForm } from "react-hook-form";
 import { categorySchema } from "@/schemas/categories.schema";
 import { useAddCategory } from "@/hooks/category.hook";
 import toast from "react-hot-toast";
+import { SingleImageUpload } from "@/components/single-image-upload";
 
 const AddCategory = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    watch,
+    setValue,
     reset,
   } = useForm({
     resolver: zodResolver(categorySchema),
   });
 
   const { mutate: addCategory, isPending, error, isError } = useAddCategory();
+
+  const selectedImage = watch("image");
 
   const onSubmit = (data) => {
     addCategory(data, {
@@ -42,6 +47,22 @@ const AddCategory = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="md:p-10 p-4 space-y-5 max-w-lg"
       >
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Category Image
+            {errors.image && <span className="text-red-500">*</span>}
+          </label>
+          <SingleImageUpload
+            value={selectedImage}
+            onImageSelect={(file) => setValue("image", file)}
+            error={errors.image?.message}
+            maxSize={5}
+            placeholder="Upload course image"
+            accept="image/*"
+            showPreview={true}
+          />
+        </div>
+
         <InputField
           label="Category Name"
           name="name"
