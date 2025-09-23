@@ -1,10 +1,12 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import { AppContextProvider } from "@/context/AppContext";
+// import { AppContextProvider } from "@/context/AppContext";
 import { Toaster } from "react-hot-toast";
 import Providers from "@/components/providers";
 import Footer from "@/components/Footer";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { AppContextProvider } from "@/context/AppContext";
+import CartContext from "@/context/CartContext";
 
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 
@@ -19,11 +21,12 @@ export default function RootLayout({ children }) {
         <body className={`${outfit.className} antialiased text-gray-700`} >
           <Providers>
           <Toaster />
-
+<CartContext>
           <AppContextProvider>
             {children}
              <ReactQueryDevtools initialIsOpen={false} />
           </AppContextProvider>
+          </CartContext>
           </Providers>
         </body>
       </html>

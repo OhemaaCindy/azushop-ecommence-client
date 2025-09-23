@@ -34,7 +34,7 @@
   
     ADDRESS: {
     createAddress: "/address",
-    
+    getAddress: "/address",
 
   },
 }

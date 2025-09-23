@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { Cart } from "@/context/CartContext";
+import { useContext, useState } from "react";
 
 const Add = ({ productData }) => {
-  console.log("🚀 ~ Add ~ productData:", productData);
+  const { cart, setCart } = useContext(Cart);
+
   const [quantity, setQuantity] = useState(1);
 
   const stock = 4;
@@ -18,7 +20,7 @@ const Add = ({ productData }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 ">
       <h4 className="font-medium">Choose a Quantity</h4>
       <div className="flex justify-between">
         <div className="flex items-center gap-4">
@@ -47,12 +49,36 @@ const Add = ({ productData }) => {
             {"Don't"} miss it
           </div>
         </div>
-        <button className="w-36 text-sm rounded-3xl ring-1 ring-[#F35C7A] text-[#F35C7A] py-2 px-4 hover:bg-[#F35C7A] hover:text-white disabled:cursor-not-allowed disabled:bg-pink-500 disabled:text-white disabled:ring-none">
-          Add to Cart
-        </button>
+
+        {cart.some((c) => c.id === productData.id) ? (
+          <button
+            className="w-36 text-sm rounded-3xl bg-gradient-to-r from-[#F35C7A] to-[#a30b29] 
+     text-white font-semibold shadow-md 
+     py-2 px-4 transition-all duration-300 ease-in-out 
+     hover:opacity-90 hover:shadow-lg 
+     active:scale-95 
+     disabled:cursor-not-allowed disabled:opacity-60"
+            onClick={() => setCart(cart.filter((c) => c.id !== productData.id))}
+          >
+            Remove
+          </button>
+        ) : (
+          <button
+            className="w-36 text-sm rounded-3xl bg-gradient-to-r from-[#F35C7A] to-[#a30b29] 
+     text-white font-semibold shadow-md 
+     py-2 px-4 transition-all duration-300 ease-in-out 
+     hover:opacity-90 hover:shadow-lg 
+     active:scale-95 
+     disabled:cursor-not-allowed disabled:opacity-60"
+            onClick={() => setCart([...cart, productData])}
+          >
+            Add To Cart
+          </button>
+        )}
       </div>
     </div>
   );
 };
 
 export default Add;
+// setCart(cart.filter(c)=>c.id !=== productData.id

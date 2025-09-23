@@ -8,10 +8,14 @@ import ProductImages from "@/components/productImages";
 import { getSingleProduct } from "@/services/product.services";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 const ProductDetailsPage = () => {
+  const [cart, setCart] = useState([]);
+  // console.log("🚀 ~ ProductDetailsPage ~ cart:", cart);
+
   const { id } = useParams();
-  console.log("🚀 ~ Product ~ id:", id);
+  // console.log("🚀 ~ Product ~ id:", id);
 
   const { data, isLoading } = useQuery({
     queryKey: ["singleProduct", id],
@@ -48,7 +52,9 @@ const ProductDetailsPage = () => {
             <span className="text-lg text-gray-400 line-through">
               ${productData?.price}
             </span>
-            <span className="text-2xl font-bold text-gray-900">${productData?.price}</span>
+            <span className="text-2xl font-bold text-gray-900">
+              ${productData?.price}
+            </span>
             <span className="text-sm px-2 py-1 bg-red-100 text-red-600 rounded-full">
               10% OFF
             </span>
@@ -58,7 +64,7 @@ const ProductDetailsPage = () => {
 
           <CustomizedProducts />
 
-          <Add productData={productData} />
+          <Add productData={productData} cart={cart} setCart={setCart} />
 
           <hr className="border-gray-200" />
 

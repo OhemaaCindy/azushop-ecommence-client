@@ -6,6 +6,18 @@ export const createAddress = async (payload) => {
     const response = await axiosClient.post(apiEndpoints.ADDRESS.createAddress, payload);
     return response.data;
   } catch (error) {
+    // console.log("🚀 ~ createAddress ~ error:", error)
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    }
+  }
+};
+
+export const getAddress = async () => {
+  try {
+    const response = await axiosClient.get(apiEndpoints.ADDRESS.getAddress);
+    return response.data;
+  } catch (error) {
     console.log("🚀 ~ createAddress ~ error:", error)
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;

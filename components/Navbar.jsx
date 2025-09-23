@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { assets } from "@/assets/assets";
 import Link from "next/link";
 import { useAppContext } from "@/context/AppContext";
@@ -10,11 +10,15 @@ import Modal from "./modal";
 import { useQuery } from "@tanstack/react-query";
 import { checkAuthUser } from "@/services/auth.services";
 import { useRouter } from "next/navigation";
+import CartModal from "./cartModal";
+import { Cart } from "@/context/CartContext";
 
 const Navbar = () => {
   // const { isSeller, router } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { cart } = useContext(Cart);
 
   const { data, isLoading } = useQuery({
     queryKey: ["user-info"],
@@ -68,6 +72,20 @@ const Navbar = () => {
             alt="search icon"
           />
           <Modal />
+
+          <li className="relative">
+            <button
+              onClick={() => setIsCartOpen(!isCartOpen)}
+              className="relative"
+            >
+              <ShoppingCart size={24} />
+              <div className="absolute -top-4 -right-4 w-5 h-5 bg-[#F35C7A] rounded-full text-white text-sm flex items-center justify-center">
+                {cart.length}
+              </div>
+            </button>
+
+            {isCartOpen && <CartModal />}
+          </li>
         </ul>
 
         {/* Mobile Hamburger */}

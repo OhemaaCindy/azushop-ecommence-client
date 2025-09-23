@@ -22,8 +22,6 @@ const AddAddress = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    watch,
-    setValue,
     reset,
   } = useForm({
     resolver: zodResolver(addressSchema),

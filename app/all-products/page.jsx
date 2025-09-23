@@ -2,8 +2,11 @@
 import ProductCard from "@/components/ProductCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useState } from "react";
 
 const AllProducts = () => {
+  const [cart, setCart] = useState([]);
+
   return (
     <>
       <Navbar />
@@ -13,7 +16,7 @@ const AllProducts = () => {
           <div className="w-16 h-0.5 bg-pink-600 rounded-full"></div>
         </div>
 
-        <ProductCard />
+        <ProductCard cart={cart} setCart={setCart} />
       </div>
 
       <Footer />
