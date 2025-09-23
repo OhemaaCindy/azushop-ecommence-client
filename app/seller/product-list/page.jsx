@@ -62,12 +62,7 @@ const ProductList = () => {
                           height={720}
                         /> */}
                         <Image
-                          src={
-                            Array.isArray(product?.image) &&
-                            product.image.length > 0
-                              ? product.image[0]
-                              : "https://images.pexels.com/photos/6732076/pexels-photo-6732076.jpeg"
-                          }
+                          src={product?.images[0]?.imageUrl}
                           alt="product Image"
                           className="w-16 h-10"
                           width={1280}

@@ -1,20 +1,28 @@
 "use client";
 import { addressDummyData } from "@/assets/assets";
 import { useAppContext } from "@/context/AppContext";
+import { Cart } from "@/context/CartContext";
 import { cn } from "@/lib/utils";
 import { productSchema } from "@/schemas/product.schema";
 import { getAddress } from "@/services/address.services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 const OrderSummary = () => {
+  const { cart, setCart } = useContext(Cart);
+  const [total, setTotal] = useState();
+
   const { currency, router, getCartCount, getCartAmount } = useAppContext();
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [userAddresses, setUserAddresses] = useState([]);
+
+  useEffect(() => {
+    setTotal(cart.reduce((acc, curr) => acc + Number(curr.price), 0));
+  }, []);
 
   const fetchUserAddresses = async () => {
     setUserAddresses(addressDummyData);
@@ -117,11 +125,8 @@ const OrderSummary = () => {
           {/* Summary */}
           <div className="space-y-3 border-t pt-4">
             <div className="flex justify-between text-sm">
-              <p className="text-gray-600">Items ({getCartCount()})</p>
-              <p className="text-gray-800 font-medium">
-                {currency}
-                {getCartAmount()}
-              </p>
+              <p className="text-gray-600">Items: {cart?.length}</p>
+              <p className="text-gray-800 font-medium">${total}</p>
             </div>
             <div className="flex justify-between text-sm">
               <p className="text-gray-600">Shipping Fee</p>
@@ -136,10 +141,7 @@ const OrderSummary = () => {
           </div> */}
             <div className="flex justify-between text-lg font-semibold border-t pt-3">
               <p>Total</p>
-              <p className="text-pink-600">
-                {currency}
-                {getCartAmount() + Math.floor(getCartAmount() * 0.02)}
-              </p>
+              <p className="text-pink-600">${total}</p>
             </div>
           </div>
         </div>

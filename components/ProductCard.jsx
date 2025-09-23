@@ -9,14 +9,13 @@ import { Cart } from "@/context/CartContext";
 
 const ProductCard = () => {
   const { cart, setCart } = useContext(Cart);
-  // console.log("🚀 ~ ProductCard ~ useContext(Cart):", useContext(Cart));
 
   const { data, isLoading } = useQuery({
     queryKey: ["allProducts"],
     queryFn: getAllProducts,
   });
   const allProducts = data || [];
-  // console.log("🚀 ~ ProductCard ~ allProducts:", allProducts);
+  console.log("🚀 ~ ProductCard ~ allProducts:", allProducts);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
@@ -58,10 +57,7 @@ const ProductCard = () => {
               {/* Image */}
               <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 mb-4">
                 <img
-                  src={
-                    product?.image ||
-                    "https://images.pexels.com/photos/7449887/pexels-photo-7449887.jpeg"
-                  }
+                  src={product?.images[0]?.imageUrl}
                   alt={product?.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
