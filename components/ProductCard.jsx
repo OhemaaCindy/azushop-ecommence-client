@@ -143,9 +143,14 @@ import Link from "next/link";
 import { Cart } from "@/context/CartContext";
 
 const ProductCard = () => {
-  const { cart, setCart } = useContext(Cart);
+  // const { cart, setCart } = useContext(Cart);
+  const { cart, addToCart, removeFromCart, isLoading } = useContext(Cart);
 
-  const { data, isLoading, error } = useQuery({
+  const {
+    data,
+    isLoading: loadingProducts,
+    error,
+  } = useQuery({
     queryKey: ["allProducts"],
     queryFn: getAllProducts,
   });
@@ -173,7 +178,7 @@ const ProductCard = () => {
     console.log("Added to wishlist:", productId);
   };
 
-  if (isLoading) {
+  if (loadingProducts) {
     return (
       <div className="px-6 py-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -257,24 +262,26 @@ const ProductCard = () => {
               {cart.some((c) => c.id === product.id) ? (
                 <button
                   className="w-36 text-sm rounded-3xl bg-gradient-to-r from-[#F35C7A] to-[#a30b29] 
-                  text-white font-semibold shadow-md py-2 px-4 transition-all duration-300 ease-in-out 
-                  hover:opacity-90 hover:shadow-lg active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+        text-white font-semibold shadow-md py-2 px-4 transition-all duration-300 ease-in-out 
+        hover:opacity-90 hover:shadow-lg active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent any parent click handlers
-                    setCart(cart.filter((c) => c.id !== product.id));
+                    e.stopPropagation();
+                    removeFromCart(product.id); // ✅ Use helper function
                   }}
+                  disabled={isLoading}
                 >
                   Remove
                 </button>
               ) : (
                 <button
                   className="w-36 text-sm rounded-3xl bg-gradient-to-r from-[#F35C7A] to-[#a30b29] 
-                  text-white font-semibold shadow-md py-2 px-4 transition-all duration-300 ease-in-out 
-                  hover:opacity-90 hover:shadow-lg active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+        text-white font-semibold shadow-md py-2 px-4 transition-all duration-300 ease-in-out 
+        hover:opacity-90 hover:shadow-lg active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent any parent click handlers
-                    setCart([...cart, product]);
+                    e.stopPropagation();
+                    addToCart(product); // ✅ Use helper function
                   }}
+                  disabled={isLoading}
                 >
                   Add To Cart
                 </button>
