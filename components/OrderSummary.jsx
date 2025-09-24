@@ -55,7 +55,6 @@ const OrderSummary = ({ total }) => {
     console.log("🚀 ~ onSubmit ~ selectedAddress:", selectedAddress);
 
     const payload = {
-      paymentMethod: "stripe",
       shippingAddress: {
         address: selectedAddress?.address || "",
         city: selectedAddress?.city || "",
@@ -75,8 +74,9 @@ const OrderSummary = ({ total }) => {
 
     mutate(payload, {
       onSuccess: (res) => {
+        reset();
         toast.success("Order placed successfully");
-        reset(), router.push(`/payment?orderId=${res.id}`);
+        router.push(`/payment?orderId=${res.id}`);
       },
       onError: (error) => {
         const errorMessage = error.message;

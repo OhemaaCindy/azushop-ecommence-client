@@ -7,7 +7,7 @@ export const addOrder = async (payload) => {
     const response = await axiosClient.post(apiEndpoints.ORDERS.createOrder, payload);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
+    // console.log("🚀 ~ registerUser ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
@@ -16,10 +16,10 @@ export const addOrder = async (payload) => {
 
 export const payOrder = async (payload) => {
   try {
-    const response = await axiosClient.put(apiEndpoints.ORDERS.payOrder, payload);
+    const response = await axiosClient.post(apiEndpoints.ORDERS.payOrder, payload);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
+    console.log("🚀 ~ payOrder ~ error:", error)
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
@@ -31,7 +31,7 @@ export const getAllOrders= async () => {
     const response = await axiosClient.get(apiEndpoints.ORDERS.getAllOrders );
     return response.data;
   } catch (error) {
-   console.log("🚀 ~ getAllOrders ~ error:", error)
+  //  console.log("🚀 ~ getAllOrders ~ error:", error)
    
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
@@ -44,7 +44,7 @@ export const getSingleOrder = async ({id}) => {
     const response = await axiosClient.get(apiEndpoints.ORDERS.getSingleOrder);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
+    // console.log("🚀 ~ registerUser ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
