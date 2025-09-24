@@ -14,7 +14,6 @@ import CartModal from "./cartModal";
 import { Cart } from "@/context/CartContext";
 
 const Navbar = () => {
-  // const { isSeller, router } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -27,8 +26,9 @@ const Navbar = () => {
   const userData = !isLoading && data ? data : null;
   const isAdmin = userData ? userData.role === "ADMIN" : false;
   const disable = isLoading || !data;
-  // console.log("🔥🔥 ~ Navbar ~ userData:", userData);
-  // console.log("🔥🔥 ~ Navbar ~ isAdmin:", isAdmin);
+
+  const navLinkClasses =
+    "relative hover:text-gray-900 transition before:content-[''] before:absolute before:-bottom-1 before:left-0 before:w-0 before:h-[2px] before:bg-pink-500 before:transition-all before:duration-300 hover:before:w-full";
 
   return (
     <nav className="border-b border-gray-300 text-gray-700">
@@ -41,16 +41,16 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-6 lg:gap-10">
-          <Link href="/" className="hover:text-gray-900 transition">
+          <Link href="/" className={navLinkClasses}>
             Home
           </Link>
-          <Link href="/all-products" className="hover:text-gray-900 transition">
+          <Link href="/all-products" className={navLinkClasses}>
             Shop
           </Link>
-          <Link href="/" className="hover:text-gray-900 transition">
+          <Link href="/" className={navLinkClasses}>
             About Us
           </Link>
-          <Link href="/" className="hover:text-gray-900 transition">
+          <Link href="/" className={navLinkClasses}>
             Contact
           </Link>
           {isAdmin && (
@@ -71,7 +71,7 @@ const Navbar = () => {
             src={assets.search_icon}
             alt="search icon"
           />
-          <Modal />
+          <Modal userData={userData} isLoading={isLoading} />
 
           <li className="relative">
             <button
@@ -101,33 +101,32 @@ const Navbar = () => {
         <div className="flex flex-col gap-4 px-6 py-4 border-t bg-white md:hidden">
           <Link
             href="/"
-            className="hover:text-gray-900 transition"
+            className={navLinkClasses}
             onClick={() => setIsOpen(false)}
           >
             Home
           </Link>
           <Link
             href="/all-products"
-            className="hover:text-gray-900 transition"
+            className={navLinkClasses}
             onClick={() => setIsOpen(false)}
           >
             Shop
           </Link>
           <Link
             href="/"
-            className="hover:text-gray-900 transition"
+            className={navLinkClasses}
             onClick={() => setIsOpen(false)}
           >
             About Us
           </Link>
           <Link
             href="/"
-            className="hover:text-gray-900 transition"
+            className={navLinkClasses}
             onClick={() => setIsOpen(false)}
           >
             Contact
           </Link>
-          {/* {isLoadingUser && <span>loading user...</span>} */}
 
           {isAdmin && (
             <button
@@ -149,7 +148,7 @@ const Navbar = () => {
               src={assets.search_icon}
               alt="search icon"
             />
-            <Modal />
+            <Modal userData={userData} isLoading={isLoading} />
           </div>
         </div>
       )}

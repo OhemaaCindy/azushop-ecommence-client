@@ -14,7 +14,7 @@ const ShopByCategories = () => {
   // Simulate API data fetching
   const router = useRouter();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["getAllCategories"],
     queryFn: getAllCategories,
   });
@@ -109,7 +109,7 @@ const ShopByCategories = () => {
     return visible;
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="w-full    px-4 py-8">
         <div className="flex items-center gap-4 mb-8">
@@ -187,10 +187,7 @@ const ShopByCategories = () => {
 
         {/* Discovery Section */}
         {discovery && (
-          <div
-            className="group cursor-pointer"
-            onClick={handleNavigation}
-          >
+          <div className="group cursor-pointer" onClick={handleNavigation}>
             <div className="relative aspect-square overflow-hidden rounded-2xl border-2 border-gray-200 mb-4 group-hover:border-gray-300 transition-colors">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100"></div>
               <div className="relative z-10 flex flex-col items-center justify-center h-full p-6 text-center">
