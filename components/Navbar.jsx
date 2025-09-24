@@ -28,7 +28,7 @@ const Navbar = () => {
   const disable = isLoading || !data;
 
   const navLinkClasses =
-    "relative hover:text-gray-900 transition before:content-[''] before:absolute before:-bottom-1 before:left-0 before:w-0 before:h-[2px] before:bg-pink-500 before:transition-all before:duration-300 hover:before:w-full";
+    "relative hover:text-gray-900 transition before:content-[''] before:absolute before:-bottom-1 before:left-0 before:w-0 before:h-[2px] before:bg-pink-500 before:transition-all before:duration-300 hover:before:w-[40px]";
 
   return (
     <nav className="border-b border-gray-300 text-gray-700">
