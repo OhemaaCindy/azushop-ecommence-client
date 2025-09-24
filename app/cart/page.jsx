@@ -1,21 +1,28 @@
 "use client";
-import React from "react";
+
 import { assets } from "@/assets/assets";
 import OrderSummary from "@/components/OrderSummary";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { useAppContext } from "@/context/AppContext";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, BowArrow } from "lucide-react";
+import { useContext } from "react";
+import { Cart } from "@/context/CartContext";
+import { useRouter } from "next/navigation";
 
-const Cart = () => {
-  const {
-    products,
-    router,
-    cartItems,
-    addToCart,
-    updateCartQuantity,
-    getCartCount,
-  } = useAppContext();
+const CartPage = () => {
+  const { cart, setCart } = useContext(Cart);
+  console.log("🚀 ~ CartPage ~ cart:", cart);
+  const router = useRouter;
+  // const {
+  //   products,
+  //   router,
+  //   cartItems,
+  //   addToCart,
+  //   updateCartQuantity,
+  //   getCartCount,
+  // } = useAppContext();
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <>
@@ -27,10 +34,21 @@ const Cart = () => {
               Your <span className="font-medium text-pink-600">Cart</span>
             </p>
             <p className="text-lg md:text-xl text-gray-500/80">
-              {getCartCount()} Items
+              {cart.length} Items
             </p>
           </div>
           <div className="overflow-x-auto">
+            <button
+              onClick={() => router.push("/all-products")}
+              className="group flex items-center mt-6 gap-2 text-pink-600 mb-10"
+            >
+              <ArrowLeft
+                className="group-hover:-translate-x-1 transition text-pink-600"
+                size={16}
+              />
+              {/* <BowArrow /> */}
+              Continue Shopping
+            </button>
             <table className="min-w-full table-auto">
               <thead className="text-left">
                 <tr>
@@ -49,76 +67,91 @@ const Cart = () => {
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(cartItems).map((itemId) => {
-                  const product = products.find(
-                    (product) => product._id === itemId
-                  );
-
-                  if (!product || cartItems[itemId] <= 0) return null;
-
+                {cart.map((item) => {
                   return (
-                    <tr key={itemId}>
+                    <tr key={item.id}>
                       <td className="flex items-center gap-4 py-4 md:px-4 px-1">
                         <div>
                           <div className="rounded-lg overflow-hidden bg-gray-500/10 p-2">
                             <Image
-                              src={product.image[0]}
-                              alt={product.name}
+                              src={item?.images[0]?.imageUrl}
+                              alt={item?.name}
                               className="w-16 h-auto object-cover mix-blend-multiply"
                               width={1280}
                               height={720}
                             />
                           </div>
-                          <button
-                            className="md:hidden text-xs text-pink-600 mt-1"
-                            onClick={() => updateCartQuantity(product._id, 0)}
+                          {/* <button
+                            className="md:hidden text-xs text-red-600 mt-1"
+                            onClick={() => updateCartQuantity(item?._id, 0)}
                           >
                             Remove
-                          </button>
+                          </button> */}
                         </div>
                         <div className="text-sm hidden md:block">
-                          <p className="text-gray-800">{product.name}</p>
+                          <p className="text-gray-800">{item?.name}</p>
                           <button
                             className="text-xs text-pink-600 mt-1"
-                            onClick={() => updateCartQuantity(product._id, 0)}
+                            onClick={() => updateCartQuantity(item?._id, 0)}
                           >
                             Remove
                           </button>
                         </div>
                       </td>
                       <td className="py-4 md:px-4 px-1 text-gray-600">
-                        ${product.offerPrice}
+                        ${item?.price}
                       </td>
                       <td className="py-4 md:px-4 px-1">
                         <div className="flex items-center md:gap-2 gap-1">
+                          {/* Decrease */}
                           <button
                             onClick={() =>
-                              updateCartQuantity(
-                                product._id,
-                                cartItems[itemId] - 1
+                              setCart(
+                                cart.map((c) =>
+                                  c.id === item.id && c.quantity > 1
+                                    ? { ...c, quantity: c.quantity - 1 }
+                                    : c
+                                )
                               )
                             }
                           >
                             <Image
-                              src={assets.decrease_arrow}
+                              src={assets?.decrease_arrow}
                               alt="decrease_arrow"
                               className="w-4 h-4"
                             />
                           </button>
+
+                          {/* Input */}
                           <input
+                            type="number"
+                            value={item.quantity}
+                            min={1}
                             onChange={(e) =>
-                              updateCartQuantity(
-                                product._id,
-                                Number(e.target.value)
+                              setCart(
+                                cart.map((c) =>
+                                  c.id === item.id
+                                    ? { ...c, quantity: Number(e.target.value) }
+                                    : c
+                                )
                               )
                             }
-                            type="number"
-                            value={cartItems[itemId]}
                             className="w-8 border text-center appearance-none"
-                          ></input>
-                          <button onClick={() => addToCart(product._id)}>
+                          />
+
+                          <button
+                            onClick={() =>
+                              setCart(
+                                cart.map((c) =>
+                                  c.id === item.id
+                                    ? { ...c, quantity: c.quantity + 1 }
+                                    : c
+                                )
+                              )
+                            }
+                          >
                             <Image
-                              src={assets.increase_arrow}
+                              src={assets?.increase_arrow}
                               alt="increase_arrow"
                               className="w-4 h-4"
                             />
@@ -126,7 +159,8 @@ const Cart = () => {
                         </div>
                       </td>
                       <td className="py-4 md:px-4 px-1 text-gray-600">
-                        ${(product.offerPrice * cartItems[itemId]).toFixed(2)}
+                        {/* ${(item.offerPrice * cartItems[itemId]).toFixed(2)} */}
+                        ${(item.price * item.quantity).toFixed(2)}
                       </td>
                     </tr>
                   );
@@ -134,18 +168,11 @@ const Cart = () => {
               </tbody>
             </table>
           </div>
-          <button
-            onClick={() => router.push("/all-products")}
-            className="group flex items-center mt-6 gap-2 text-pink-600"
-          >
-            <ArrowLeft className="group-hover:-translate-x-1 transition text-pink-600" />
-            Continue Shopping
-          </button>
         </div>
-        <OrderSummary />
+        <OrderSummary total={total} />
       </div>
     </>
   );
 };
 
-export default Cart;
+export default CartPage;

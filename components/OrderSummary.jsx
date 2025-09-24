@@ -2,58 +2,36 @@
 import { addressDummyData } from "@/assets/assets";
 import { useAppContext } from "@/context/AppContext";
 import { Cart } from "@/context/CartContext";
+import { useAddOrder } from "@/hooks/order.hook";
 import { cn } from "@/lib/utils";
+import { orderSchema } from "@/schemas/order.schema";
 import { productSchema } from "@/schemas/product.schema";
 import { getAddress } from "@/services/address.services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
-const OrderSummary = () => {
+const OrderSummary = ({ total }) => {
   const { cart, setCart } = useContext(Cart);
-  const [total, setTotal] = useState();
+  // const [total, setTotal] = useState();
 
-  const { currency, router, getCartCount, getCartAmount } = useAppContext();
+  const { currency, getCartCount, getCartAmount } = useAppContext();
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [userAddresses, setUserAddresses] = useState([]);
-
-  useEffect(() => {
-    setTotal(cart.reduce((acc, curr) => acc + Number(curr.price), 0));
-  }, []);
-
-  const fetchUserAddresses = async () => {
-    setUserAddresses(addressDummyData);
-  };
-
-  const handleAddressSelect = (address) => {
-    setSelectedAddress(address);
-    setIsDropdownOpen(false);
-  };
-
-  const createOrder = async () => {
-    console.log("Order created with:", {
-      address: selectedAddress,
-      items: getCartCount(),
-      subtotal: getCartAmount(),
-      tax: Math.floor(getCartAmount() * 0.02),
-      total: getCartAmount() + Math.floor(getCartAmount() * 0.02),
-    });
-    // TODO: send payload to backend
-  };
-
-  useEffect(() => {
-    fetchUserAddresses();
-  }, []);
+  const router = useRouter();
 
   const { data, isLoading } = useQuery({
     queryKey: ["getAddress"],
     queryFn: getAddress,
   });
-  console.log("🚀 ~ OrderSummary ~ data:", data);
+  // console.log("🚀 ~ OrderSummary ~ data:", data);
   const addressList = data || [];
+
   const {
     register,
     handleSubmit,
@@ -62,18 +40,47 @@ const OrderSummary = () => {
     watch,
     reset,
   } = useForm({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(orderSchema),
   });
 
-  // const {mutate,isPending,isError,error} = useMutation()
+  const { mutate, isPending, isError, error } = useAddOrder();
+
   const onSubmit = (data) => {
-    addProduct(data, {
-      onSuccess: () => {
-        toast.success("Product created successfully");
-        reset();
+    console.log("🚀 ~ onSubmit ~ data:", data);
+
+    // Find the selected address from list
+    const selectedAddress = addressList.find(
+      (item) => item.id === data.address
+    );
+    console.log("🚀 ~ onSubmit ~ selectedAddress:", selectedAddress);
+
+    const payload = {
+      paymentMethod: "stripe",
+      shippingAddress: {
+        address: selectedAddress?.address || "",
+        city: selectedAddress?.city || "",
+        postalCode: selectedAddress?.postalCode || "",
+        country: selectedAddress?.country || "",
+      },
+      orderItems: cart.map((item) => ({
+        name: item.name,
+        qty: item.quantity,
+        image: item.image,
+        price: item.price,
+        product: item.id,
+      })),
+    };
+
+    console.log("🚀 Final Payload to send:", payload);
+
+    mutate(payload, {
+      onSuccess: (res) => {
+        toast.success("Order placed successfully");
+        reset(), router.push(`/payment?orderId=${res.id}`);
       },
       onError: (error) => {
         const errorMessage = error.message;
+        console.log("🚀 ~ onSubmit ~ errorMessage:", errorMessage);
         toast.error(errorMessage);
       },
     });
@@ -85,6 +92,7 @@ const OrderSummary = () => {
         Order Summary
       </h2>
       <form onSubmit={handleSubmit(onSubmit)}>
+        {isError && <span>{error.message}</span>}
         <div className="mt-6 space-y-6">
           {/* Address Selector */}
           <div>
@@ -98,13 +106,14 @@ const OrderSummary = () => {
                   <span className="text-sm text-gray-500">Loading...</span>
                 </div>
               )}
+
               <select
-                {...register("category")}
+                {...register("address")}
                 disabled={isLoading}
                 className={cn(
                   "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
                   "border-gray-300",
-                  errors.category && "border-red-500 bg-red-50"
+                  errors.address && "border-red-500 bg-red-50"
                 )}
               >
                 <option value="">Select Address</option>
@@ -114,10 +123,17 @@ const OrderSummary = () => {
                   </option>
                 ))}
               </select>
+
+              <div
+                onClick={() => router.push("/add-address")}
+                className="mt-2 px-4 py-2 border rounded-md text-center cursor-pointer hover:bg-gray-500/10 text-pink-600"
+              >
+                + Add New Address
+              </div>
             </div>
-            {errors.category && (
+            {errors.address && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.category.message}
+                {errors.address.message}
               </p>
             )}
           </div>
@@ -126,32 +142,27 @@ const OrderSummary = () => {
           <div className="space-y-3 border-t pt-4">
             <div className="flex justify-between text-sm">
               <p className="text-gray-600">Items: {cart?.length}</p>
-              <p className="text-gray-800 font-medium">${total}</p>
+              <p className="text-gray-800 font-medium">${total.toFixed(2)}</p>
             </div>
             <div className="flex justify-between text-sm">
               <p className="text-gray-600">Shipping Fee</p>
               <p className="font-medium text-green-600">Free</p>
             </div>
-            {/* <div className="flex justify-between text-sm">
-            <p className="text-gray-600">Tax (2%)</p>
-            <p className="font-medium text-gray-800">
-              {currency}
-              {Math.floor(getCartAmount() * 0.02)}
-            </p>
-          </div> */}
+
             <div className="flex justify-between text-lg font-semibold border-t pt-3">
               <p>Total</p>
-              <p className="text-pink-600">${total}</p>
+              <p className="text-pink-600">${total.toFixed(2)}</p>
             </div>
           </div>
         </div>
 
         {/* Place Order */}
         <button
-          onClick={createOrder}
+          disabled={isSubmitting || isPending}
+          // onClick={createOrder}
           className="w-full mt-6 py-3 bg-pink-600 text-white font-medium rounded-md hover:bg-pink-700 transition-colors"
         >
-          Place Order
+          {isSubmitting || isPending ? "Placing..." : "Place Order"}
         </button>
       </form>
     </div>
