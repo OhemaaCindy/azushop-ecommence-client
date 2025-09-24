@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getAllCategories } from "@/services/category.services";
+import { useRouter } from "next/navigation";
 // import { useNavigate } from "react-router";
 
 const ShopByCategories = () => {
@@ -9,6 +12,15 @@ const ShopByCategories = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   //   const navigate = useNavigate();
   // Simulate API data fetching
+  const router = useRouter();
+
+  const { data } = useQuery({
+    queryKey: ["getAllCategories"],
+    queryFn: getAllCategories,
+  });
+  const mockCategories = data || [];
+  console.log("🚀 ~ ShopByCategories ~ data:", data);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -16,50 +28,50 @@ const ShopByCategories = () => {
       // Simulate network delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const mockCategories = [
-        {
-          id: 1,
-          name: "Clothing",
-          image:
-            "https://images.pexels.com/photos/1488463/pexels-photo-1488463.jpeg",
-          description: "Fashion & Apparel",
-        },
-        {
-          id: 2,
-          name: "Sunglasses",
-          image:
-            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-          description: "Eyewear & Accessories",
-        },
-        {
-          id: 3,
-          name: "Heels",
-          image:
-            "https://images.pexels.com/photos/1801279/pexels-photo-1801279.jpeg",
-          description: "Handbags & Totes",
-        },
-        {
-          id: 4,
-          name: "Shoes",
-          image:
-            "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-          description: "Footwear Collection",
-        },
-        {
-          id: 5,
-          name: "Jewelry",
-          image:
-            "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-          description: "Accessories & More",
-        },
-        {
-          id: 6,
-          name: "T-shirts",
-          image:
-            "https://images.pexels.com/photos/9225884/pexels-photo-9225884.jpeg",
-          description: "Accessories & More",
-        },
-      ];
+      // const data = [
+      //   {
+      //     id: 1,
+      //     name: "Clothing",
+      //     image:
+      //       "https://images.pexels.com/photos/1488463/pexels-photo-1488463.jpeg",
+      //     description: "Fashion & Apparel",
+      //   },
+      //   {
+      //     id: 2,
+      //     name: "Sunglasses",
+      //     image:
+      //       "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      //     description: "Eyewear & Accessories",
+      //   },
+      //   {
+      //     id: 3,
+      //     name: "Heels",
+      //     image:
+      //       "https://images.pexels.com/photos/1801279/pexels-photo-1801279.jpeg",
+      //     description: "Handbags & Totes",
+      //   },
+      //   {
+      //     id: 4,
+      //     name: "Shoes",
+      //     image:
+      //       "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      //     description: "Footwear Collection",
+      //   },
+      //   {
+      //     id: 5,
+      //     name: "Jewelry",
+      //     image:
+      //       "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      //     description: "Accessories & More",
+      //   },
+      //   {
+      //     id: 6,
+      //     name: "T-shirts",
+      //     image:
+      //       "https://images.pexels.com/photos/9225884/pexels-photo-9225884.jpeg",
+      //     description: "Accessories & More",
+      //   },
+      // ];
 
       const mockDiscovery = {
         title: "Discovery",
@@ -121,7 +133,7 @@ const ShopByCategories = () => {
   const visibleCategories = getVisibleCategories();
 
   const handleNavigation = () => {
-    //   navigate("/products/1");
+    router.push("/all-products");
   };
 
   return (
@@ -152,30 +164,33 @@ const ShopByCategories = () => {
       {/* Categories Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ease-linear duration-300 transition-all">
         {/* Category Items */}
-        {visibleCategories.map((category) => (
+        {mockCategories.map((category) => (
           <div
             key={category.id}
             className="group cursor-pointer"
-            onClick={() => console.log(`Navigate to ${category.name}`)}
+            onClick={() => console.log(`Navigate to ${category?.name}`)}
           >
             <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100 mb-4 group-hover:scale-105 transition-all duration-300 ease-in">
               <img
-                src={category.image}
-                alt={category.name}
+                src={category?.imageUrl}
+                alt={category?.name}
                 className="w-full h-full object-cover duration-150 ease-in-out transition-transform"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
             <h3 className="text-lg font-medium text-gray-900 group-hover:text-gray-600 transition-colors">
-              {category.name}
+              {category?.name}
             </h3>
           </div>
         ))}
 
         {/* Discovery Section */}
         {discovery && (
-          <div className="group cursor-pointer">
+          <div
+            className="group cursor-pointer"
+            onClick={handleNavigation}
+          >
             <div className="relative aspect-square overflow-hidden rounded-2xl border-2 border-gray-200 mb-4 group-hover:border-gray-300 transition-colors">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100"></div>
               <div className="relative z-10 flex flex-col items-center justify-center h-full p-6 text-center">
@@ -183,10 +198,7 @@ const ShopByCategories = () => {
                   {discovery.title}
                 </h3>
                 <p className="text-gray-600 mb-6">{discovery.subtitle}</p>
-                <button
-                  className="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center transition-colors group-hover:border-gray-400 cursor-pointer hover:bg-blue-200"
-                  onClick={handleNavigation}
-                >
+                <button className="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center transition-colors group-hover:border-gray-400 cursor-pointer ">
                   <ChevronRight className="w-5 h-5 text-gray-600 " />
                 </button>
               </div>
