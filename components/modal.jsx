@@ -107,6 +107,7 @@ const Modal = ({ userData, isLoading }) => {
               </Link>
 
               <DropdownMenuItem
+                disabled={isPending}
                 onClick={handleLogout}
                 className="flex items-center gap-10 cursor-pointer"
               >

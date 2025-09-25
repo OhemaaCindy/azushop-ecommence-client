@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { Icon } from "iconsax-reactjs";
 
 const About = () => {
   return (
@@ -25,15 +26,10 @@ const About = () => {
         <section className="py-20 px-6 md:px-20">
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
-              <Image
-                src="https://images.pexels.com/photos/3769748/pexels-photo-3769748.jpeg"
-                alt="Luxury Fashion"
-                width={600}
-                height={700}
-                className="rounded-2xl object-cover shadow-lg w-full h-full"
-              />
-              <div className="absolute -bottom-6 -right-6 bg-pink-600 text-white px-6 py-3 rounded-lg text-sm shadow-lg">
-                Est. 2025
+              <div className="relative flex items-center justify-center">
+                <div className="bg-pink-500 text-white rounded-2xl flex items-center justify-center w-64 h-64 shadow-xl">
+                  <Icon size="120" color="#FFFFFF" />
+                </div>
               </div>
             </div>
             <div className="flex flex-col space-y-6 text-center lg:text-left">

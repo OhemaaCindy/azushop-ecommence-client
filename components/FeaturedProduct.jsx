@@ -1,6 +1,7 @@
 import React from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const products = [
   {
@@ -27,6 +28,11 @@ const products = [
 ];
 
 const FeaturedProduct = () => {
+  const router = useRouter();
+
+  const handleRoute = () => {
+    router.push("/all-products");
+  };
   return (
     <div className="mt-14 px-4 sm:px-6 lg:px-2 ">
       <div className="flex flex-col items-center text-center">
@@ -53,7 +59,10 @@ const FeaturedProduct = () => {
               <p className="text-xs sm:text-sm lg:text-base leading-5 max-w-[14rem] sm:max-w-[16rem]">
                 {description}
               </p>
-              <button className="flex items-center gap-1.5 bg-pink-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded text-xs sm:text-sm lg:text-base">
+              <button
+                className="flex items-center gap-1.5 bg-pink-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded text-xs sm:text-sm lg:text-base"
+                onClick={handleRoute}
+              >
                 Buy now
                 <Image
                   className="h-3 w-3 sm:h-4 sm:w-4"

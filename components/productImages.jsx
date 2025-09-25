@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 
-const ProductImages = () => {
+const ProductImages = ({ productData }) => {
+  console.log("🚀 ~ ProductImages ~ productData:", productData);
   const images = [
     {
       id: 1,
@@ -29,7 +30,7 @@ const ProductImages = () => {
       {/* Main Image */}
       <div className="h-[500px] w-full">
         <img
-          src={images[index].url}
+          src={productData?.images?.[index]}
           alt="product"
           className="w-full h-full object-cover rounded-xl shadow-md"
         />
@@ -37,7 +38,7 @@ const ProductImages = () => {
 
       {/* Thumbnails */}
       <div className="grid grid-cols-4 gap-4 mt-6">
-        {images.map((img, i) => (
+        {productData?.images.map((img, i) => (
           <button
             key={img.id}
             onClick={() => setIndex(i)}

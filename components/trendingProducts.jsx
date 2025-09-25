@@ -6,16 +6,17 @@ import { getAllProducts } from "@/services/product.services";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Cart } from "@/context/CartContext";
+import { useRouter } from "next/navigation";
 
 const TrendingProducts = () => {
-  // const { cart, setCart } = useContext(Cart);
+  const router = useRouter();
   const { cart, addToCart, removeFromCart, isLoading } = useContext(Cart);
 
   const { data, isLoading: loadingProducts } = useQuery({
     queryKey: ["allProducts"],
     queryFn: getAllProducts,
   });
-  const allProducts = data?.slice(0, 10) || [];
+  const allProducts = data?.slice(0, 8) || [];
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
@@ -44,6 +45,9 @@ const TrendingProducts = () => {
       </div>
     );
   }
+  const handleRoute = () => {
+    router.push("/all-products");
+  };
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -90,7 +94,7 @@ const TrendingProducts = () => {
                     ${product?.originalPrice}
                   </span>
                 )}
-                <span className="text-sm font-semibold text-red-600">
+                <span className="text-sm font-semibold text-teal-600">
                   ${product?.price}
                 </span>
               </div>
@@ -99,7 +103,7 @@ const TrendingProducts = () => {
             <div className="mt-3">
               {cart.some((c) => c.id === product.id) ? (
                 <button
-                  className="w-36 text-sm rounded-3xl bg-gradient-to-r from-[#F35C7A] to-[#a30b29] 
+                  className="w-36 text-sm rounded-3xl bg-red-500 
         text-white font-semibold shadow-md py-2 px-4 transition-all duration-300 ease-in-out 
         hover:opacity-90 hover:shadow-lg active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
                   onClick={(e) => {
@@ -112,7 +116,7 @@ const TrendingProducts = () => {
                 </button>
               ) : (
                 <button
-                  className="w-36 text-sm rounded-3xl bg-gradient-to-r from-[#F35C7A] to-[#a30b29] 
+                  className="w-36 text-sm rounded-3xl bg-teal-400 
         text-white font-semibold shadow-md py-2 px-4 transition-all duration-300 ease-in-out 
         hover:opacity-90 hover:shadow-lg active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
                   onClick={(e) => {
@@ -129,9 +133,13 @@ const TrendingProducts = () => {
         ))}
       </div>
 
-      {/* See More button */}
-      <div className="flex items-center justify-center mt-9 ">
-        {/* future "SEE MORE" button goes here */}
+      <div className="flex justify-center mt-8">
+        <button
+          className="rounded-md bg-pink-400 hover:bg-pink-300 text-white px-6 py-3 font-semibold shadow-md hover:opacity-90 transition duration-300"
+          onClick={handleRoute}
+        >
+          See More
+        </button>
       </div>
     </>
   );

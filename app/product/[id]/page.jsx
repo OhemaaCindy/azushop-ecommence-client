@@ -28,7 +28,7 @@ const ProductDetailsPage = () => {
       <div className="px-4 sm:px-6 md:px-12 lg:px-24 xl:px-32 py-6 flex flex-col lg:flex-row gap-8 lg:gap-16">
         {/* Image container */}
         <div className="w-full lg:w-1/2 h-fit lg:sticky top-20 self-start">
-          <ProductImages />
+          <ProductImages productData={productData} />
         </div>
 
         {/* Text container */}

@@ -21,12 +21,10 @@ const ProductList = () => {
   });
 
   const productList = data || [];
-  console.log("🚀 ~ ProductList ~ productList:", productList);
 
   const { mutate, isError, error, isPending } = useDeleteProduct();
 
   const handleDelete = (id) => {
-    console.log("🚀 ~ handleDelete ~ id:", id);
     mutate(id, {
       onSuccess: (res) => {
         console.log("🚀 ~ handleDelete ~ res:", res);
@@ -67,16 +65,6 @@ const ProductList = () => {
                   <tr key={index} className="border-t border-gray-500/20">
                     <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
                       <div className="bg-gray-500/10 rounded p-2">
-                        {/* <Image
-                          src={
-                            product?.image[0] ||
-                            "https://images.pexels.com/photos/6732076/pexels-photo-6732076.jpeg"
-                          }
-                          alt="product Image"
-                          className="w-16"
-                          width={1280}
-                          height={720}
-                        /> */}
                         <Image
                           src={product?.images[0]?.imageUrl}
                           alt="product Image"

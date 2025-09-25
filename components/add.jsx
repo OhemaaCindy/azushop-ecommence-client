@@ -76,7 +76,7 @@ const Add = ({ productData }) => {
 
         {isInCart ? (
           <button
-            className="w-36 text-sm rounded-3xl bg-red-600 
+            className="w-36 text-sm rounded-3xl bg-red-500 
             text-white font-semibold shadow-md 
             py-2 px-4 transition-all duration-300 ease-in-out 
             hover:bg-red-700 hover:shadow-lg 
@@ -87,7 +87,7 @@ const Add = ({ productData }) => {
           </button>
         ) : (
           <button
-            className="w-36 text-sm rounded-3xl bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] 
+            className="w-36 text-sm rounded-3xl bg-teal-400 
     text-white font-semibold shadow-md 
     py-2 px-4 transition-all duration-300 ease-in-out 
     hover:opacity-90 hover:shadow-lg 
