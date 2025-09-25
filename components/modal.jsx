@@ -35,7 +35,6 @@ import {
 import { useLogout } from "@/hooks/auth.hook";
 import { checkAuthUser, logout } from "@/services/auth.services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const Modal = ({ userData, isLoading }) => {
   console.log("🚀 ~ Modal ~ userData:", userData);
@@ -46,14 +45,6 @@ const Modal = ({ userData, isLoading }) => {
 
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
-  // const { data, isLoading: isLoadingUser } = useQuery({
-  //   queryKey: ["user-info"],
-  //   queryFn: checkAuthUser,
-  //   staleTime: 300000,
-  // });
-
-  // const userData = data || {};
-
   const handleLogout = () => {
     logout();
   };
@@ -63,17 +54,6 @@ const Modal = ({ userData, isLoading }) => {
       {userData?.username ? (
         <div>
           <DropdownMenu open={isOpenDropdown} onOpenChange={setIsOpenDropdown}>
-            {/* <DropdownMenuTrigger className="flex items-center gap-2 cursor-pointer border-none outline-none">
-              {isLoading ? (
-                <span>loading...</span>
-              ) : (
-                // <Skeleton className="h-[20px] w-[100px] rounded-full" />
-                <>
-                  <Image src={assets.user_icon} alt="user icon" />
-                  <p>{userData?.username}</p>
-                </>
-              )}
-            </DropdownMenuTrigger> */}
             <DropdownMenuTrigger className="flex items-center gap-2 cursor-pointer border-none outline-none">
               {isLoading ? (
                 <div className="flex items-center gap-2">

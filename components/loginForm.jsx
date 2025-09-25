@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { loginSchema } from "@/schemas/auth.schema";
 import { AlertDialogCancel } from "./ui/alert-dialog";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, LoaderCircle } from "lucide-react";
 import { useLogin } from "@/hooks/auth.hook";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -80,7 +80,11 @@ const LoginForm = ({ setMode, setIsModal }) => {
             disabled={isSubmitting || isPending}
             className="mb-4 cursor-pointer w-full bg-pink-600 hover:bg-pink-300"
           >
-            {isSubmitting || isPending ? "Logging in..." : "Log in"}
+            {isSubmitting || isPending ? (
+              <LoaderCircle className="animate-spin text-white" />
+            ) : (
+              "Log in"
+            )}
           </Button>
         </div>
         <div>

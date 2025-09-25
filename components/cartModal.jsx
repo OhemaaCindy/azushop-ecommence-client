@@ -1,50 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Cart } from "@/context/CartContext";
 
-const CartModal = () => {
-  const { cart, setCart } = useContext(Cart);
-  console.log("🚀 ~ CartModal ~ cart:", cart);
+const CartModal = ({ onClose }) => {
+  const { cart, removeFromCart, updateQuantity, getCartItemCount } =
+    useContext(Cart);
+  const modalRef = useRef(null);
 
-  const cartItems = [
-    {
-      name: "Product Name 1",
-      price: 49,
-      quantity: 2,
-      available: true,
-      image:
-        "https://images.pexels.com/photos/1381562/pexels-photo-1381562.jpeg",
-    },
-    {
-      name: "Product Name 2",
-      price: 79,
-      quantity: 1,
-      available: true,
-      image:
-        "https://images.pexels.com/photos/1381562/pexels-photo-1381562.jpeg",
-    },
-  ];
-
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
+  const subtotal = cart.reduce(
+    (total, item) => total + item.price * (item.quantity || 1),
     0
   );
 
   return (
-    <div className="w-full bg-red-600">
-      <div className="w-[400px]  max-h-[70vh] overflow-y-scroll absolute p-4 rounded-md shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 right-0 flex flex-col gap-6 z-20">
-        {!cartItems.length ? (
-          <div>Cart is Empty</div>
+    <div className="w-full">
+      <div
+        ref={modalRef}
+        className="w-[400px] max-h-[70vh] overflow-y-scroll absolute p-4 rounded-md shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 right-0 flex flex-col gap-6 z-20"
+      >
+        {cart.length === 0 ? (
+          <>
+            <h2 className="text-xl font-semibold">
+              Shopping Cart ({getCartItemCount()})
+            </h2>
+            <div>Cart is Empty</div>
+            <Link href="/cart">
+              <button className="flex-1 rounded-md py-2 px-3 ring-1 ring-gray-300 hover:bg-gray-50">
+                View Cart
+              </button>
+            </Link>
+          </>
         ) : (
           <>
-            <h2 className="text-xl font-semibold">Shopping Cart</h2>
+            <h2 className="text-xl font-semibold">
+              Shopping Cart ({getCartItemCount()})
+            </h2>
+
             <div className="flex flex-col gap-6 max-h-[70vh] overflow-y-auto">
-              {cart.map((item, index) => (
-                <div key={index} className="flex items-start gap-3">
+              {cart.map((item) => (
+                <div key={item.id} className="flex items-start gap-3">
                   <img
-                    src={item?.images[0]?.imageUrl}
+                    src={item?.images?.[0]?.imageUrl || item.image}
                     alt={item.name}
                     className="object-cover w-20 h-20 rounded-md"
                   />
@@ -56,25 +54,41 @@ const CartModal = () => {
                           ${item.price}
                         </div>
                       </div>
-                      <div className="text-xs text-gray-500">
+                      {/* <div className="text-xs text-gray-500">
                         {item.available ? "Available" : "Out of stock"}
-                      </div>
+                      </div> */}
                     </div>
-                    <div className="flex justify-between text-sm mt-1">
-                      <span className="text-gray-500">
-                        Qty. {item.quantity}
-                      </span>
-                      
-                      {cart.some((c) => c.id === item.id) && (
+
+                    {/* Quantity controls */}
+                    <div className="flex justify-between items-center text-sm mt-1">
+                      <div className="flex items-center gap-2">
                         <button
-                          className="text-red-500 cursor-pointer "
+                          className="px-2 py-1 border rounded"
                           onClick={() =>
-                            setCart(cart.filter((c) => c.id !== item.id))
+                            updateQuantity(item.id, (item.quantity || 1) - 1)
                           }
                         >
-                          Remove
+                          -
                         </button>
-                      )}
+                        <span className="text-gray-700">
+                          {item.quantity || 1}
+                        </span>
+                        <button
+                          className="px-2 py-1 border rounded"
+                          onClick={() =>
+                            updateQuantity(item.id, (item.quantity || 1) + 1)
+                          }
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <button
+                        className="text-red-500 cursor-pointer"
+                        onClick={() => removeFromCart(item.id)}
+                      >
+                        Remove
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -83,23 +97,13 @@ const CartModal = () => {
 
             {/* Bottom */}
             <div className="pt-2 border-t border-gray-200">
-              {/* <div className="flex items-center justify-between font-semibold text-sm mb-2">
-              <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
-            </div> */}
-              {/* <p className="text-gray-500 text-xs mb-3">
-              Shipping and taxes calculated at checkout
-            </p> */}
-              <div className="flex justify-between gap-2">
+              <div className="flex justify-between gap-2 items-center">
+                <span className="font-semibold">Subtotal: ${subtotal}</span>
                 <Link href="/cart">
                   <button className="flex-1 rounded-md py-2 px-3 ring-1 ring-gray-300 hover:bg-gray-50">
                     View Cart
                   </button>
                 </Link>
-
-                {/* <button className="flex-1 rounded-md py-2 px-3 bg-black text-white hover:bg-gray-800">
-                Checkout
-              </button> */}
               </div>
             </div>
           </>
