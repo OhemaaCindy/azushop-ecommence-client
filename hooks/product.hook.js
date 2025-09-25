@@ -1,5 +1,5 @@
 
-import { addProduct, updateProduct } from "@/services/product.services";
+import { addProduct, deleteProduct, updateProduct } from "@/services/product.services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useAddProduct = () => {
@@ -27,12 +27,12 @@ export const useUpdateProduct = () => {
 
 
 
-// export const useDeleteTrack = () => {
-//   const queryClient = useQueryClient();
-//   return useMutation({
-//     mutationFn: (id) => deleteTrack(id),
-//     onSuccess() {
-//       queryClient.invalidateQueries({ queryKey: ["get-all-tracks"] });
-//     },
-//   });
-// };
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => deleteProduct(id),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["allProducts"] });
+    },
+  });
+};

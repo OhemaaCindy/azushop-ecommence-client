@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { loginSchema, registerSchema } from "@/schemas/auth.schema";
 import { AlertDialogCancel } from "./ui/alert-dialog";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, LoaderCircle } from "lucide-react";
 import { useRegister } from "@/hooks/auth.hook";
 
 const RegisterForm = ({ setMode }) => {
@@ -77,7 +77,11 @@ const RegisterForm = ({ setMode }) => {
             disabled={isSubmitting || isPending}
             className="mb-4 cursor-pointer w-full bg-pink-600 hover:bg-pink-300"
           >
-            {isSubmitting || isPending ? "Signing up..." : "Sign Up"}
+            {isSubmitting || isPending ? (
+              <LoaderCircle className="animate-spin text-white" />
+            ) : (
+              "Sign Up"
+            )}
           </Button>
         </div>
         <p className="flex items-center gap-2 text-sm">

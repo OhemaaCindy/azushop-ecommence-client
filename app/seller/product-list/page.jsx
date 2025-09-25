@@ -9,6 +9,8 @@ import Loading from "@/components/Loading";
 import { getAllProducts } from "@/services/product.services";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, Trash2 } from "lucide-react";
+import { useDeleteProduct } from "@/hooks/product.hook";
+import toast from "react-hot-toast";
 
 const ProductList = () => {
   const { router } = useAppContext();
@@ -19,9 +21,23 @@ const ProductList = () => {
   });
 
   const productList = data || [];
-  // console.log("🚀 ~ ProductList ~ productList:", productList);
+  console.log("🚀 ~ ProductList ~ productList:", productList);
 
-  const handleDelete = () => {};
+  const { mutate, isError, error, isPending } = useDeleteProduct();
+
+  const handleDelete = (id) => {
+    console.log("🚀 ~ handleDelete ~ id:", id);
+    mutate(id, {
+      onSuccess: (res) => {
+        console.log("🚀 ~ handleDelete ~ res:", res);
+        toast.success("deleted successfully");
+      },
+      onError: (error) => {
+        const errorMessage = error.errorMessage;
+        toast.error(errorMessage);
+      },
+    });
+  };
 
   return (
     <div className="flex-1 min-h-screen flex flex-col justify-between">
@@ -76,8 +92,12 @@ const ProductList = () => {
                     </td>
                     <td className="px-4 py-3">${product?.price}</td>
                     <td className="px-4 py-3 max-sm:hidden">
+                      {isError && (
+                        <span className="text-red-500">{error.message}</span>
+                      )}
                       <button
-                        onClick={handleDelete}
+                        onClick={() => handleDelete(product?.id)}
+                        disabled={isPending}
                         className="flex items-center gap-1 px-1.5 md:px-3.5 py-2 bg-red-600 text-white rounded-md"
                       >
                         <span className="hidden md:block">Delete</span>

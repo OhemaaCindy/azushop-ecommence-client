@@ -103,14 +103,14 @@ export const getSingleProduct = async (id) => {
   }
 };
 
-export const deleteProduct = async ({ id }) => {
+export const deleteProduct = async (id ) => {
   try {
-    const response = await axiosClient.get(
-      apiEndpoints.PRODUCTS.deleteCategory(id)
+    const response = await axiosClient.delete(
+      apiEndpoints.PRODUCTS.deleteProduct(id)
     );
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
+    console.log("🚀 ~ deleteProduct ~ error:", error)
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }

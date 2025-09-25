@@ -61,7 +61,7 @@ const Orders = () => {
                   {order?.orderItems?.map((item, index) => (
                     <span
                       key={`${order.id}-qty-${item.id || index}`}
-                      className="text-center"
+                      className=""
                     >
                       {item?.qty || "N/A"}
                     </span>
@@ -73,7 +73,7 @@ const Orders = () => {
                   {order?.orderItems?.map((item, index) => (
                     <span
                       key={`${order.id}-price-${item.id || index}`}
-                      className="text-center"
+                      className=""
                     >
                       ${item?.price || "N/A"}
                     </span>

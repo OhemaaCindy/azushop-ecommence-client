@@ -7,6 +7,7 @@ import { categorySchema } from "@/schemas/categories.schema";
 import { useAddCategory } from "@/hooks/category.hook";
 import toast from "react-hot-toast";
 import { SingleImageUpload } from "@/components/single-image-upload";
+import { LoaderCircle } from "lucide-react";
 
 const AddCategory = () => {
   const {
@@ -75,7 +76,11 @@ const AddCategory = () => {
           className="px-8 py-2 bg-pink-600 text-white font-medium rounded"
           disabled={isSubmitting || isPending}
         >
-          {isSubmitting || isPending ? "Adding..." : " Add"}
+          {isSubmitting || isPending ? (
+            <LoaderCircle className="animate-spin text-white" />
+          ) : (
+            "Create Category"
+          )}
         </button>
       </form>
     </div>

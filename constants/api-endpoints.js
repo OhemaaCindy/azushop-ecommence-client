@@ -22,6 +22,7 @@
     updateProduct:(id)=> `/products/${id}`,
      getSingleProduct: (id)=>`/products/${id}`,
     getAllProduct: "/products",
+    deleteProduct: (id)=>`/products/${id}`,
   },
 
     ORDERS: {

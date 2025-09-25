@@ -14,6 +14,7 @@ import { ImageUpload } from "@/components/multiple-image-upload";
 import { SizeSelector } from "@/components/sizeSelector";
 import { ColorSelector } from "@/components/colorSelector";
 import { RatingSelector } from "@/components/ratingsSelector";
+import { LoaderCircle } from "lucide-react";
 
 const AddProduct = () => {
   const {
@@ -299,7 +300,11 @@ const AddProduct = () => {
           className="px-8 py-2.5 bg-pink-600 text-white font-medium rounded hover:bg-pink-700 transition-colors disabled:opacity-50"
           disabled={isSubmitting || isPending}
         >
-          {isSubmitting || isPending ? "Creating..." : "Create Product"}
+          {isSubmitting || isPending ? (
+            <LoaderCircle className="animate-spin text-white" />
+          ) : (
+            "Create Product"
+          )}
         </button>
       </form>
     </div>
