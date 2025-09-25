@@ -17,15 +17,15 @@ const Orders = () => {
   const orderDetails = data || [];
 
   return (
-    <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm">
+    <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm ">
       {isLoading ? (
         <Loading />
       ) : (
         <div className="md:p-10 p-4 space-y-5">
           <h2 className="text-lg font-medium">Orders</h2>
-          <div className="max-w-6xl rounded-md">
+          <div className="max-w-6xl rounded-md overflow-hidden shadow bg-white">
             {/* Table Header */}
-            <div className="grid grid-cols-4 md:grid-cols-5 gap-4 font-semibold border-b border-gray-300 pb-2">
+            <div className="grid grid-cols-4 md:grid-cols-5 gap-4 font-semibold border-b border-gray-300 bg-gray-100 py-3 px-4 text-gray-800">
               <span>Items</span>
               <span>Quantity</span>
               <span>Price</span>
@@ -37,38 +37,51 @@ const Orders = () => {
             {orderDetails?.map((order) => (
               <div
                 key={order?.id}
-                className="grid grid-cols-4 md:grid-cols-5 gap-4 py-4 border-b border-gray-200 items-start"
+                className="grid grid-cols-4 md:grid-cols-5 gap-4 py-4 px-4 border-b border-gray-200 hover:bg-gray-50 transition"
               >
                 {/* Items */}
-                <div className="flex flex-col gap-2">
-                  {order?.orderItems?.map((item) => (
-                    <div key={item.id} className="flex items-center gap-2">
-                      <Image
-                        className="w-10 h-10 object-cover rounded"
+                <div className="flex flex-col gap-3">
+                  {order?.orderItems?.map((item, index) => (
+                    <div
+                      key={`${order.id}-item-${item.id || index}`}
+                      className="flex items-center gap-2"
+                    >
+                      {/* <Image
+                        className="w-10 h-10 object-cover rounded border border-gray-200"
                         src={assets.box_icon}
                         alt="box_icon"
-                      />
-                      <span>{item?.name}</span>
+                      /> */}
+                      <span className="text-gray-800">{item?.name}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Quantity */}
-                <div className="flex flex-col gap-2 ">
-                  {order?.orderItems?.map((item) => (
-                    <span key={item.id}>{item?.qty || "N/A"}</span>
+                <div className="flex flex-col gap-3 text-gray-700">
+                  {order?.orderItems?.map((item, index) => (
+                    <span
+                      key={`${order.id}-qty-${item.id || index}`}
+                      className="text-center"
+                    >
+                      {item?.qty || "N/A"}
+                    </span>
                   ))}
                 </div>
 
                 {/* Price */}
-                <div className="flex flex-col gap-2  font-medium">
-                  {order?.orderItems?.map((item) => (
-                    <span key={item.id}>${item?.price || "N/A"}</span>
+                <div className="flex flex-col gap-3 font-medium text-gray-800">
+                  {order?.orderItems?.map((item, index) => (
+                    <span
+                      key={`${order.id}-price-${item.id || index}`}
+                      className="text-center"
+                    >
+                      ${item?.price || "N/A"}
+                    </span>
                   ))}
                 </div>
 
                 {/* Shipping */}
-                <div className="text-gray-600 text-sm">
+                <div className="text-gray-600 text-sm leading-5">
                   <span>{order?.shippingAddress?.address}</span>
                   <br />
                   <span>
@@ -81,11 +94,18 @@ const Orders = () => {
 
                 {/* Payment Info */}
                 <div className="hidden md:flex flex-col gap-1 text-gray-600 text-sm">
-                  <span>Method: {order?.paymentMethod || "N/A"}</span>
                   <span>
-                    Date: {format(new Date(order?.createdAt), "MMM do yyyy")}
+                    <span className="font-medium text-gray-800">Method:</span>{" "}
+                    {order?.paymentMethod || "N/A"}
                   </span>
-                  <span>Status: {order?.status || "N/A"}</span>
+                  <span>
+                    <span className="font-medium text-gray-800">Date:</span>{" "}
+                    {format(new Date(order?.createdAt), "MMM do yyyy")}
+                  </span>
+                  <span>
+                    <span className="font-medium text-gray-800">Status:</span>{" "}
+                    {order?.status || "N/A"}
+                  </span>
                 </div>
               </div>
             ))}

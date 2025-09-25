@@ -215,7 +215,7 @@ const Navbar = () => {
           <Link href="/about" className={navLinkClasses}>
             About Us
           </Link>
-          <Link href="/" className={navLinkClasses}>
+          <Link href="/contact" className={navLinkClasses}>
             Contact
           </Link>
           {isAdmin && (
@@ -314,7 +314,7 @@ const Navbar = () => {
               About Us
             </Link>
             <Link
-              href="/"
+              href="/contact"
               className={mobileNavLinkClasses}
               onClick={() => setIsOpen(false)}
             >
