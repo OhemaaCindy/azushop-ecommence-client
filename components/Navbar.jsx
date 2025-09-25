@@ -212,7 +212,7 @@ const Navbar = () => {
           <Link href="/all-products" className={navLinkClasses}>
             Shop
           </Link>
-          <Link href="/" className={navLinkClasses}>
+          <Link href="/about" className={navLinkClasses}>
             About Us
           </Link>
           <Link href="/" className={navLinkClasses}>
@@ -307,7 +307,7 @@ const Navbar = () => {
               Shop
             </Link>
             <Link
-              href="/"
+              href="/about"
               className={mobileNavLinkClasses}
               onClick={() => setIsOpen(false)}
             >
