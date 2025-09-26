@@ -30,7 +30,7 @@
     payOrder: `/orders/pay`,
     getSingleOrder: (id)=>`/orders/${id}`,
     getAllOrders: "/orders",
-
+myOrder:"/orders/my-orders"
   },
   
     ADDRESS: {

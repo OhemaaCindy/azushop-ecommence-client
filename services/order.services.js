@@ -50,3 +50,18 @@ export const getSingleOrder = async ({id}) => {
     }
   }
 };
+
+export const getMyOrders = async () => {
+  try {
+    const response = await axiosClient.get(apiEndpoints.ORDERS.myOrder);
+    return response.data;
+  } catch (error) {
+    console.log("🚀 ~ getMyOrders ~ error:", error)
+    if (axios.isAxiosError(error) && error.response) {
+      throw new (error.response.data).message;
+    }else{
+      throw new Error("Failed to get orders")
+    }
+    
+  }
+};

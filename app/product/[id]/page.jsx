@@ -21,6 +21,7 @@ const ProductDetailsPage = () => {
   });
 
   const productData = data || {};
+  console.log("🚀 ~ ProductDetailsPage ~ productData:", productData);
 
   return (
     <>
@@ -60,7 +61,7 @@ const ProductDetailsPage = () => {
 
           <hr className="border-gray-200 my-2" />
 
-          <CustomizedProducts />
+          <CustomizedProducts productData={productData} />
 
           <Add productData={productData} />
 

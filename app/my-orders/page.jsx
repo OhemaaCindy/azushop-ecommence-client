@@ -6,6 +6,9 @@ import { useAppContext } from "@/context/AppContext";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
+import { useQuery } from "@tanstack/react-query";
+import { getAllOrders, getMyOrders } from "@/services/order.services";
+import { checkAuthUser } from "@/services/auth.services";
 
 const MyOrders = () => {
   const { currency } = useAppContext();
@@ -21,6 +24,14 @@ const MyOrders = () => {
   useEffect(() => {
     fetchOrders();
   }, []);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["myOrders"],
+    queryFn: getMyOrders,
+  });
+
+  const details = data || [];
+  console.log("🚀 ~ MyOrders ~ details:", details);
 
   return (
     <>

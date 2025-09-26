@@ -1,28 +1,32 @@
-const CustomizedProducts = () => {
+const CustomizedProducts = ({ productData }) => {
+  const color = productData.color;
+  const size = productData.size;
+
   return (
     <div className="flex flex-col gap-6">
-      <h4 className="font-medium">Available colors</h4>
+      {/* Colors */}
+      <h4 className="font-medium">Available color</h4>
       <ul className="flex items-center gap-3">
-        <li className="w-8 h-8 rounded-full ring-1 ring-gray-100 cursor-pointer relative bg-red-500">
-          <div className="absolute w-10 h-10 rounded-full ring-2 ring-blue-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-        </li>
-        <li className="w-8 h-8 rounded-full ring-1 ring-gray-100 cursor-pointer relative bg-blue-500"></li>
-        <li className="w-8 h-8 rounded-full ring-1 ring-gray-100 cursor-not-allowed relative bg-green-500">
-          <div className="absolute w-10 h-[2px] bg-red-400 rotate-45 ring-blue-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-        </li>
+        {color ? (
+          <li
+            className="w-8 h-8 rounded-full ring-1 ring-gray-100 cursor-pointer"
+            style={{ backgroundColor: color.toLowerCase() }}
+          ></li>
+        ) : (
+          <li className="text-gray-400">No color available</li>
+        )}
       </ul>
+
+      {/* Sizes */}
       <h4 className="font-medium">Available size</h4>
       <ul className="flex items-center gap-3">
-        <li className="ring-1 ring-[#F35C7A] rounded-md py-2 px-6 text-sm cursor-pointer">
-          Small
-        </li>
-        <li className="ring-1 ring-[#F35C7A] text-white bg-[#F35C7A] rounded-md py-2 px-6 text-sm cursor-pointer">
-          Medium
-        </li>
-
-        <li className="ring-1 ring-pink-200 text-white bg-pink-200 rounded-md py-2 px-6 text-sm cursor-not-allowed">
-          Large
-        </li>
+        {size ? (
+          <li className="ring-1 ring-pink-200 rounded-md py-2 px-6 text-sm cursor-pointer">
+            {size}
+          </li>
+        ) : (
+          <li className="text-gray-400">No size available</li>
+        )}
       </ul>
     </div>
   );
