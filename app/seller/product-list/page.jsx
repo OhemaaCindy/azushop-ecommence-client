@@ -16,8 +16,8 @@ const ProductList = () => {
   const { router } = useAppContext();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["allProducts"],
-    queryFn: getAllProducts,
+    queryKey: ["allProducts", null],
+    queryFn: () => getAllProducts(null),
   });
 
   const productList = data || [];

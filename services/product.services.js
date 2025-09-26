@@ -86,6 +86,8 @@ export const getAllProducts = async (categoryId) => {
   }
 };
 
+
+
 export const getSingleProduct = async (id) => {
   try {
     const response = await axiosClient.get(
