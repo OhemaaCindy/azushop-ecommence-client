@@ -47,7 +47,7 @@ const PaymentPage = ({ searchParams }) => {
       orderId,
       paymentMethod: selectedMethod,
       phone: data.phone,
-      callback_url: "http://localhost:3000",
+      callback_url: process.env.NEXT_PUBLIC_CLIENT_URL,
     };
 
     mutate(payload, {

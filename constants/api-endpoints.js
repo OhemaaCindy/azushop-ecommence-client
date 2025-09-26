@@ -1,4 +1,4 @@
- export const BASEURL = "http://localhost:4000/api";
+ export const BASEURL = process.env.NEXT_PUBLIC_SERVER_URL;
 
  export const apiEndpoints = {
   baseURL: BASEURL,
