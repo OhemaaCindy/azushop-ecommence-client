@@ -7,7 +7,7 @@ export const createUser = async (payload) => {
     const response = await axiosClient.post(apiEndpoints.AUTH.register, payload);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
+    // console.log("🚀 ~ registerUser ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
@@ -19,7 +19,7 @@ export const loginUser = async (payload) => {
     const response = await axiosClient.post(apiEndpoints.AUTH.login, payload);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ loginUser ~ error:", error);
+    // console.log("🚀 ~ loginUser ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
@@ -31,10 +31,10 @@ export const loginUser = async (payload) => {
 export const checkAuthUser = async () => {
   try {
     const response = await axiosClient.get(apiEndpoints.AUTH.checkAuth);
-    console.log("🚀 ~ checkAuthUser ~ response:", response);
+    // console.log("🚀 ~ checkAuthUser ~ response:", response);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ checkAuthUser ~ error:", error);
+    // console.log("🚀 ~ checkAuthUser ~ error:", error);
     
     if (axios.isAxiosError(error) && error.response) {
       // For 401 errors, return null instead of throwing
@@ -58,7 +58,7 @@ export const logout = async () => {
     const response = await axiosClient.get(apiEndpoints.AUTH.logout);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ logout ~ error:", error)
+    // console.log("🚀 ~ logout ~ error:", error)
     
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
