@@ -12,7 +12,6 @@ import { useRouter } from "next/navigation";
 const CartPage = () => {
   const { cart, setCart } = useContext(Cart);
 
-  console.log("🚀 ~ CartPage ~ cart:", cart);
   const router = useRouter();
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -33,13 +32,6 @@ const CartPage = () => {
           {/* 🔹 Empty cart fallback */}
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center text-center py-16 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-              {/* <Image
-                src={assets?.empty_cart || "/empty-cart.png"}
-                alt="Empty cart"
-                width={150}
-                height={150}
-                className="opacity-80 mb-6"
-              /> */}
               <h3 className="text-xl md:text-2xl font-semibold text-gray-700 mb-2">
                 Your cart is empty
               </h3>

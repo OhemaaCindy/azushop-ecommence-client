@@ -21,7 +21,6 @@ const PaymentPage = ({ searchParams }) => {
   // const searchParams = useSearchParams();
 
   // const orderId = searchParams.get("orderId");
-  console.log("🚀 ~ PaymentPage ~ orderId:", orderId);
 
   // calculate total
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -37,12 +36,10 @@ const PaymentPage = ({ searchParams }) => {
   });
 
   const selectedMethod = watch("paymentMethod");
-  // console.log("🚀 ~ PaymentPage ~ selectedMethod:", selectedMethod);
 
   const { mutate, isPending, isError, error } = usePayOrder();
 
   const onSubmit = (data) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
     const payload = {
       orderId,
       paymentMethod: selectedMethod,
@@ -53,12 +50,10 @@ const PaymentPage = ({ searchParams }) => {
     mutate(payload, {
       onSuccess: (res) => {
         toast.success("Payment successful");
-        console.log("Payment response:", res);
 
         router.push("/order-placed");
       },
       onError: (error) => {
-        console.log("🚀 ~ onSubmit ~ error:", error);
         const errorMessage = error.message;
         toast.error(errorMessage);
       },

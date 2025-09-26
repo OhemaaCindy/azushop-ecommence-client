@@ -21,7 +21,6 @@ const ProductDetailsPage = () => {
   });
 
   const productData = data || {};
-  console.log("🚀 ~ ProductDetailsPage ~ productData:", productData);
 
   return (
     <>

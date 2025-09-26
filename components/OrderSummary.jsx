@@ -29,7 +29,6 @@ const OrderSummary = ({ total }) => {
     queryKey: ["getAddress"],
     queryFn: getAddress,
   });
-  // console.log("🚀 ~ OrderSummary ~ data:", data);
   const addressList = data || [];
 
   const {
@@ -46,13 +45,10 @@ const OrderSummary = ({ total }) => {
   const { mutate, isPending, isError, error } = useAddOrder();
 
   const onSubmit = (data) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
-
     // Find the selected address from list
     const selectedAddress = addressList.find(
       (item) => item.id === data.address
     );
-    console.log("🚀 ~ onSubmit ~ selectedAddress:", selectedAddress);
 
     const payload = {
       shippingAddress: {
@@ -70,8 +66,6 @@ const OrderSummary = ({ total }) => {
       })),
     };
 
-    console.log("🚀 Final Payload to send:", payload);
-
     mutate(payload, {
       onSuccess: (res) => {
         reset();
@@ -80,7 +74,6 @@ const OrderSummary = ({ total }) => {
       },
       onError: (error) => {
         const errorMessage = error.message;
-        console.log("🚀 ~ onSubmit ~ errorMessage:", errorMessage);
         toast.error(errorMessage);
       },
     });

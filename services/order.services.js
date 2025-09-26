@@ -7,7 +7,6 @@ export const addOrder = async (payload) => {
     const response = await axiosClient.post(apiEndpoints.ORDERS.createOrder, payload);
     return response.data;
   } catch (error) {
-    // console.log("🚀 ~ registerUser ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
@@ -19,7 +18,6 @@ export const payOrder = async (payload) => {
     const response = await axiosClient.post(apiEndpoints.ORDERS.payOrder, payload);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ payOrder ~ error:", error)
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
@@ -31,7 +29,6 @@ export const getAllOrders= async () => {
     const response = await axiosClient.get(apiEndpoints.ORDERS.getAllOrders );
     return response.data;
   } catch (error) {
-  //  console.log("🚀 ~ getAllOrders ~ error:", error)
    
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
@@ -44,7 +41,6 @@ export const getSingleOrder = async ({id}) => {
     const response = await axiosClient.get(apiEndpoints.ORDERS.getSingleOrder);
     return response.data;
   } catch (error) {
-    // console.log("🚀 ~ registerUser ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
@@ -56,7 +52,6 @@ export const getMyOrders = async () => {
     const response = await axiosClient.get(apiEndpoints.ORDERS.myOrder);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ getMyOrders ~ error:", error)
     if (axios.isAxiosError(error) && error.response) {
       throw new (error.response.data).message;
     }else{

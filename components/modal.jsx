@@ -38,7 +38,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Icon } from "iconsax-reactjs";
 
 const Modal = ({ userData, isLoading }) => {
-  // console.log("🚀 ~ Modal ~ userData:", userData);
   const [mode, setMode] = useState("login");
   const [isOpenModal, setIsOpenModal] = useState(false);
 

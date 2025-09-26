@@ -27,7 +27,6 @@ const ProductList = () => {
   const handleDelete = (id) => {
     mutate(id, {
       onSuccess: (res) => {
-        console.log("🚀 ~ handleDelete ~ res:", res);
         toast.success("deleted successfully");
       },
       onError: (error) => {
