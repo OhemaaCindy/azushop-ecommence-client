@@ -35,9 +35,10 @@ import {
 import { useLogout } from "@/hooks/auth.hook";
 import { checkAuthUser, logout } from "@/services/auth.services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Icon } from "iconsax-reactjs";
 
 const Modal = ({ userData, isLoading }) => {
-  console.log("🚀 ~ Modal ~ userData:", userData);
+  // console.log("🚀 ~ Modal ~ userData:", userData);
   const [mode, setMode] = useState("login");
   const [isOpenModal, setIsOpenModal] = useState(false);
 
@@ -142,7 +143,10 @@ const Modal = ({ userData, isLoading }) => {
 
                 <div className="flex flex-col justify-center items-center">
                   <AlertDialogTitle className="text-2xl tracking-wide mb-3 flex gap-2 items-center">
-                    <ShoppingCart className="text-pink-500" />
+                    {/* <ShoppingCart className="text-pink-500" /> */}
+                    <div className="bg-pink-500 text-white rounded-lg h-9 w-9 flex items-center justify-center">
+                      <Icon size="24" color="#FFFFFF" />
+                    </div>
                     Azu Shop
                   </AlertDialogTitle>
 
