@@ -9,9 +9,9 @@ import { Cart } from "@/context/CartContext";
 import CardLoader from "./shimmer";
 import { useSearchParams } from "next/navigation";
 
-const ProductCard = () => {
-  const searchParams = useSearchParams();
-  const categoryId = searchParams.get("categoryId");
+const ProductCard = ({ categoryId }) => {
+  // const searchParams = useSearchParams();
+  // const categoryId = searchParams.get("categoryId");
   // console.log("🚀 ~ ProductCard ~ categoryId:", categoryId);
   const { cart, addToCart, removeFromCart } = useContext(Cart);
 

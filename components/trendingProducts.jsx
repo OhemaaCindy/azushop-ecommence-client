@@ -13,10 +13,11 @@ const TrendingProducts = () => {
   const { cart, addToCart, removeFromCart, isLoading } = useContext(Cart);
 
   const { data, isLoading: loadingProducts } = useQuery({
-    queryKey: ["allProducts"],
-    queryFn: getAllProducts,
+    queryKey: ["allProducts", null],
+    queryFn: () => getAllProducts(null),
   });
   const allProducts = data?.slice(0, 8) || [];
+  console.log("🚀 ~ TrendingProducts ~ allProducts:", allProducts);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (

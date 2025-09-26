@@ -80,6 +80,7 @@ export const getAllProducts = async (categoryId) => {
       let url = "/products"; 
   if (categoryId) url += `?categoryId=${categoryId}`
     const response = await axiosClient.get(url);
+    console.log("🚀 ~ getAllProducts ~ response.data:", response.data)
     return response.data;
   } catch (error) {
     console.log("🚀 ~ getAllProducts ~ error:", error);

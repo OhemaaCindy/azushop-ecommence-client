@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { use, useContext } from "react";
 import { Cart } from "@/context/CartContext";
 import Navbar from "@/components/Navbar";
 import { useForm } from "react-hook-form";
@@ -12,13 +12,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 
-const PaymentPage = () => {
+// CLIENT COMPONENT
+const PaymentPage = ({ searchParams }) => {
   const { cart } = useContext(Cart);
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const orderId = use(searchParams).orderId;
 
-  const orderId = searchParams.get("orderId");
-  // console.log("🚀 ~ PaymentPage ~ orderId:", orderId);
+  // const searchParams = useSearchParams();
+
+  // const orderId = searchParams.get("orderId");
+  console.log("🚀 ~ PaymentPage ~ orderId:", orderId);
 
   // calculate total
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
