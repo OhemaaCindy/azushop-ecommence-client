@@ -7,16 +7,20 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Cart } from "@/context/CartContext";
 import CardLoader from "./shimmer";
+import { useSearchParams } from "next/navigation";
 
 const ProductCard = () => {
+  const searchParams = useSearchParams();
+  const categoryId = searchParams.get("categoryId");
+  // console.log("🚀 ~ ProductCard ~ categoryId:", categoryId);
   const { cart, addToCart, removeFromCart } = useContext(Cart);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["allProducts"],
-    queryFn: getAllProducts,
+    queryKey: ["allProducts", categoryId],
+    queryFn: () => getAllProducts(categoryId),
   });
   const allProducts = data || [];
-  console.log("🚀 ~ ProductCard ~ allProducts:", allProducts);
+  // console.log("🚀 ~ ProductCard ~ allProducts:", allProducts);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (

@@ -75,9 +75,11 @@ export const updateProduct = async ({ payload, id }) => {
   }
 };
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (categoryId) => {
   try {
-    const response = await axiosClient.get(apiEndpoints.PRODUCTS.getAllProduct);
+      let url = "/products"; 
+  if (categoryId) url += `?categoryId=${categoryId}`
+    const response = await axiosClient.get(url);
     return response.data;
   } catch (error) {
     console.log("🚀 ~ getAllProducts ~ error:", error);

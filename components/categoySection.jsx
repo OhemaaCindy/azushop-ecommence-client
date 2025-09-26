@@ -17,6 +17,7 @@ const ShopByCategories = () => {
   });
 
   const categories = data || [];
+  console.log("🚀 ~ ShopByCategories ~ categories:", categories);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -136,7 +137,10 @@ const ShopByCategories = () => {
           <div
             key={category.id}
             className="group cursor-pointer"
-            onClick={() => console.log(`Navigate to ${category?.name}`)}
+            // onClick={() => console.log(`Navigate to ${category?.name}`)}
+            onClick={() =>
+              router.push(`/all-products?categoryId=${category.id}`)
+            }
           >
             <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100 mb-4 group-hover:scale-105 transition-all duration-300 ease-in">
               <img
