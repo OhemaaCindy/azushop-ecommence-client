@@ -23,25 +23,9 @@ export const AppContextProvider = ({ children }) => {
   const [isSeller, setIsSeller] = useState(false);
   const [cartItems, setCartItems] = useState({});
 
-  // const { data, isLoading: isLoadingUser } = useQuery({
-  //   queryKey: ["user-info"],
-  //   queryFn: checkAuthUser,
-  // });
-  // console.log("🚀 ~ AppContextProvider ~ data:", data);
-
   useEffect(() => {
     setProducts(productsDummyData);
   }, []);
-
-  // useEffect(() => {
-  //   if (data?.role === "ADMIN") {
-  //     setUserData(data);
-  //     setIsSeller(true);
-  //   } else if (data?.role === "USER") {
-  //     setUserData(data);
-  //     setIsSeller(false);
-  //   }
-  // }, [data]);
 
   const addToCart = (itemId) => {
     let cartData = structuredClone(cartItems);

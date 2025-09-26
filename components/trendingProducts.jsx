@@ -17,7 +17,6 @@ const TrendingProducts = () => {
     queryFn: () => getAllProducts(null),
   });
   const allProducts = data?.slice(0, 8) || [];
-  console.log("🚀 ~ TrendingProducts ~ allProducts:", allProducts);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (

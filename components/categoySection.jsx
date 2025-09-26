@@ -17,7 +17,6 @@ const ShopByCategories = () => {
   });
 
   const categories = data || [];
-  console.log("🚀 ~ ShopByCategories ~ categories:", categories);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -137,7 +136,6 @@ const ShopByCategories = () => {
           <div
             key={category.id}
             className="group cursor-pointer"
-            // onClick={() => console.log(`Navigate to ${category?.name}`)}
             onClick={() =>
               router.push(`/all-products?categoryId=${category.id}`)
             }

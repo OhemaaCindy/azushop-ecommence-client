@@ -27,7 +27,6 @@ const LoginForm = ({ setMode, setIsModal }) => {
   const onSubmit = (data) => {
     login(data, {
       onSuccess: (res) => {
-        console.log("🚀 ~ onSubmit ~ res:", res);
         // localStorage.setItem("token", res.token);
         // Store token
         localStorage.setItem("token", res.token);

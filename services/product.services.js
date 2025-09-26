@@ -39,7 +39,6 @@ export const addProduct = async (payload) => {
   formData.append("rating", rating);
   try {
     
-    console.log("🚀 ~ addProduct ~ formData:", formData);
     
     const response = await axiosClient.post(
       apiEndpoints.PRODUCTS.createProduct,
@@ -53,7 +52,6 @@ export const addProduct = async (payload) => {
       
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ addProduct ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
@@ -68,7 +66,6 @@ export const updateProduct = async ({ payload, id }) => {
     );
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ registerUser ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
@@ -80,10 +77,8 @@ export const getAllProducts = async (categoryId) => {
       let url = "/products"; 
   if (categoryId) url += `?categoryId=${categoryId}`
     const response = await axiosClient.get(url);
-    console.log("🚀 ~ getAllProducts ~ response.data:", response.data)
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ getAllProducts ~ error:", error);
 
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
@@ -92,14 +87,12 @@ export const getAllProducts = async (categoryId) => {
 };
 
 export const getSingleProduct = async (id) => {
-  console.log("🚀 ~ getSingleProduct ~ id:", id);
   try {
     const response = await axiosClient.get(
       apiEndpoints.PRODUCTS.getSingleProduct(id)
     );
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ getSingleProduct ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
@@ -113,7 +106,6 @@ export const deleteProduct = async (id ) => {
     );
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ deleteProduct ~ error:", error)
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }

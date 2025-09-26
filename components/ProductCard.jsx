@@ -10,9 +10,6 @@ import CardLoader from "./shimmer";
 import { useSearchParams } from "next/navigation";
 
 const ProductCard = ({ categoryId }) => {
-  // const searchParams = useSearchParams();
-  // const categoryId = searchParams.get("categoryId");
-  // console.log("🚀 ~ ProductCard ~ categoryId:", categoryId);
   const { cart, addToCart, removeFromCart } = useContext(Cart);
 
   const { data, isLoading } = useQuery({
@@ -20,7 +17,6 @@ const ProductCard = ({ categoryId }) => {
     queryFn: () => getAllProducts(categoryId),
   });
   const allProducts = data || [];
-  // console.log("🚀 ~ ProductCard ~ allProducts:", allProducts);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
