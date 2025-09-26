@@ -7,7 +7,7 @@ export const useAddCategory = () => {
   return useMutation({
     mutationFn: addCategory,
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["get-all-tracks"] });
+      queryClient.invalidateQueries({ queryKey: ["getAllCategories"] });
     },
   });
 };
@@ -39,7 +39,7 @@ export const useDeleteCategory = () => {
   return useMutation({
     mutationFn: (id) => deleteCategory(id),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["get-all-tracks"] });
+      queryClient.invalidateQueries({ queryKey: ["getAllCategories"] });
     },
   });
 };
